@@ -327,7 +327,7 @@ groups.forEach((group, index) => {
     // Create and add the group label
     const label = document.createElement("div");
     label.className = "group-label";
-    label.innerText = `{group.group_label}`; // Customize the label text as needed
+    label.innerText = `${group.group_label}`; // Customize the label text as needed
     groupDiv.appendChild(label);
 
     group.layers.forEach(layer => {
