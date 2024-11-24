@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Decision Tree</title>
+    <title>Dynamic Decision Tree with Aliases</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,6 +55,8 @@
             cursor: pointer;
             transition: 0.3s;
             font-size: 14px;
+            text-align: center;
+            word-wrap: break-word;
         }
 
         .tree-level button:hover {
@@ -73,30 +75,38 @@
     </style>
 </head>
 <body>
-    <h1>Dynamic Decision Tree</h1>
-    <p>Define your groups, buttons, and connections dynamically.</p>
+    <h1>Dynamic Decision Tree with Aliases</h1>
+    <p>Define groups, buttons with long names, and connections using aliases.</p>
     <div class="tree-container" id="tree-container"></div>
 
     <script>
         // Define groups and buttons
         const groups = [
-            { id: "group1", buttons: ["I need to create an Account Plan", "Doing Outreach", "Leveraging Partners"] },
-            { id: "group2", buttons: ["2A", "2B", "2C"] },
-            { id: "group3", buttons: ["3A", "3B", "3C"] },
-            { id: "group4", buttons: ["4A", "4B", "4C"] },
-            { id: "group5", buttons: ["5A", "5B", "5C"] },
-            { id: "group6", buttons: ["6A", "6B", "6C"] },
-            { id: "group7", buttons: ["7A", "7B", "7C"] }
-            // Add more groups as needed
+            { id: "group1", buttons: [
+                { alias: "1A", label: "I need to create an Account Plan" },
+                { alias: "1B", label: "I want to review Sales Metrics" },
+                { alias: "1C", label: "I am preparing for a Client Meeting" },
+            ] },
+            { id: "group2", buttons: [
+                { alias: "2A", label: "Review the current account plan" },
+                { alias: "2B", label: "Gather metrics from the CRM" },
+                { alias: "2C", label: "Prepare a presentation for the client" },
+            ] },
+            { id: "group3", buttons: [
+                { alias: "3A", label: "Finalize and share the account plan" },
+                { alias: "3B", label: "Present insights to stakeholders" },
+                { alias: "3C", label: "Schedule a follow-up with the client" },
+            ] },
         ];
 
-        // Define connections between buttons
+        // Define connections between buttons using aliases
         const connections = [
-            { from: "I need to create an Account Plan", to: "2B" },
-            { from: "1C", to: "2A" },
-            { from: "2A", to: "3C" },
-            { from: "1A", to: "3C" }, // Example of a cross-group connection
-            // Add more connections as needed
+            { from: "1A", to: "2A" },
+            { from: "1B", to: "2B" },
+            { from: "1C", to: "2C" },
+            { from: "2A", to: "3A" },
+            { from: "2B", to: "3B" },
+            { from: "2C", to: "3C" },
         ];
 
         // Render groups and buttons dynamically
@@ -108,10 +118,10 @@
                 groupDiv.className = "tree-level";
                 groupDiv.id = group.id;
 
-                group.buttons.forEach((buttonLabel) => {
+                group.buttons.forEach(({ alias, label }) => {
                     const button = document.createElement("button");
-                    button.innerText = buttonLabel;
-                    button.id = buttonLabel;
+                    button.innerText = label;
+                    button.id = alias; // Use alias as the ID for connections
                     groupDiv.appendChild(button);
                 });
 
