@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Decision Tree with Two Columns</title>
+    <title>Flexible Decision Tree with Layers</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
 
         .tree-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: flex-start;
             margin: 50px;
             width: 90%;
@@ -37,21 +37,28 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
-            position: relative;
             padding: 20px;
             border-radius: 10px;
+            position: relative;
             min-width: 200px;
         }
 
-        /* Pastel colors for groups */
-        .tree-level:nth-child(1) { background-color: #ffebcd; /* beige */ }
-        .tree-level:nth-child(2) { background-color: #e6f7ff; /* blue */ }
-        .tree-level:nth-child(3) { background-color: #e8ffe6; /* green */ }
-        .tree-level:nth-child(4) { background-color: #ffe4e1; /* pink */ }
-        .tree-level:nth-child(5) { background-color: #d5e8d4; /* mint */ }
-        .tree-level:nth-child(6) { background-color: #fbe4c2; /* light orange */ }
-        .tree-level:nth-child(7) { background-color: #f4d8e7; /* lavender */ }
-        .tree-level:nth-child(8) { background-color: #d9edf7; /* light teal */ }
+        .layer {
+            display: flex;
+            flex-wrap: wrap; /* Allows horizontal alignment of buttons in a layer */
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Unique pastel colors for each group */
+        .group1 { background-color: #ffe4e1; }
+        .group2 { background-color: #e6f7ff; }
+        .group3 { background-color: #e8ffe6; }
+        .group4 { background-color: #fffacd; }
+        .group5 { background-color: #ffebcd; }
+        .group6 { background-color: #d5e8d4; }
+        .group7 { background-color: #fbe4c2; }
+        .group8 { background-color: #f4d8e7; }
 
         .tree-level button {
             padding: 10px 20px;
@@ -81,30 +88,77 @@
     </style>
 </head>
 <body>
-    <h1>Dynamic Decision Tree with Two Columns</h1>
-    <p>Groups are organized into two columns with 4 groups in each column.</p>
+    <h1>Flexible Decision Tree with Layers</h1>
+    <p>Each group can have multiple layers of horizontally aligned buttons.</p>
     <div class="tree-container">
         <div class="column" id="left-column"></div>
         <div class="column" id="right-column"></div>
     </div>
 
     <script>
-        // Define groups and buttons
+        // Define groups with layers of buttons
         const groups = [
-            { id: "group1", buttons: [{ alias: "1A", label: "Create an Account Plan" }, { alias: "1B", label: "Review Sales Metrics" }] },
-            { id: "group2", buttons: [{ alias: "2A", label: "Gather Client Data" }, { alias: "2B", label: "Prepare Meeting Agenda" }] },
-            { id: "group3", buttons: [{ alias: "3A", label: "Analyze CRM Metrics" }, { alias: "3B", label: "Plan Client Presentation" }] },
-            { id: "group4", buttons: [{ alias: "4A", label: "Develop a Sales Strategy" }, { alias: "4B", label: "Submit Action Items" }] },
-            { id: "group5", buttons: [{ alias: "5A", label: "Follow Up with Client" }, { alias: "5B", label: "Send Summary Email" }] },
-            { id: "group6", buttons: [{ alias: "6A", label: "Review Team Feedback" }, { alias: "6B", label: "Update Sales Plan" }] },
-            { id: "group7", buttons: [{ alias: "7A", label: "Refine Metrics" }, { alias: "7B", label: "Prepare Final Presentation" }] },
-            { id: "group8", buttons: [{ alias: "8A", label: "Finalize and Share Outcomes" }, { alias: "8B", label: "Schedule Next Steps" }] },
+            {
+                id: "group1",
+                layers: [
+                    [{ alias: "1A", label: "Button 1A" }],
+                    [{ alias: "1B", label: "Button 1B" }, { alias: "1C", label: "Button 1C" }],
+                    [{ alias: "1D", label: "Button 1D" }, { alias: "1E", label: "Button 1E" }]
+                ]
+            },
+            {
+                id: "group2",
+                layers: [
+                    [{ alias: "2A", label: "Button 2A" }],
+                    [{ alias: "2B", label: "Button 2B" }, { alias: "2C", label: "Button 2C" }]
+                ]
+            },
+            {
+                id: "group3",
+                layers: [
+                    [{ alias: "3A", label: "Button 3A" }, { alias: "3B", label: "Button 3B" }]
+                ]
+            },
+            {
+                id: "group4",
+                layers: [
+                    [{ alias: "4A", label: "Button 4A" }],
+                    [{ alias: "4B", label: "Button 4B" }]
+                ]
+            },
+            {
+                id: "group5",
+                layers: [
+                    [{ alias: "5A", label: "Button 5A" }, { alias: "5B", label: "Button 5B" }]
+                ]
+            },
+            {
+                id: "group6",
+                layers: [
+                    [{ alias: "6A", label: "Button 6A" }],
+                    [{ alias: "6B", label: "Button 6B" }]
+                ]
+            },
+            {
+                id: "group7",
+                layers: [
+                    [{ alias: "7A", label: "Button 7A" }],
+                    [{ alias: "7B", label: "Button 7B" }]
+                ]
+            },
+            {
+                id: "group8",
+                layers: [
+                    [{ alias: "8A", label: "Button 8A" }, { alias: "8B", label: "Button 8B" }]
+                ]
+            }
         ];
 
         // Define connections between buttons using aliases
         const connections = [
             { from: "1A", to: "2A" },
-            { from: "1B", to: "2B" },
+            { from: "1C", to: "2B" },
+            { from: "1E", to: "2C" },
             { from: "2A", to: "3A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
@@ -116,7 +170,7 @@
             { from: "6A", to: "7A" },
             { from: "6B", to: "7B" },
             { from: "7A", to: "8A" },
-            { from: "7B", to: "8B" },
+            { from: "7B", to: "8B" }
         ];
 
         // Render groups and buttons dynamically
@@ -126,14 +180,21 @@
 
             groups.forEach((group, index) => {
                 const groupDiv = document.createElement("div");
-                groupDiv.className = "tree-level";
+                groupDiv.className = `tree-level group${index + 1}`;
                 groupDiv.id = group.id;
 
-                group.buttons.forEach(({ alias, label }) => {
-                    const button = document.createElement("button");
-                    button.innerText = label;
-                    button.id = alias; // Use alias as the ID for connections
-                    groupDiv.appendChild(button);
+                group.layers.forEach(layer => {
+                    const layerDiv = document.createElement("div");
+                    layerDiv.className = "layer";
+
+                    layer.forEach(({ alias, label }) => {
+                        const button = document.createElement("button");
+                        button.innerText = label;
+                        button.id = alias; // Use alias as the ID for connections
+                        layerDiv.appendChild(button);
+                    });
+
+                    groupDiv.appendChild(layerDiv);
                 });
 
                 // Distribute groups between columns
