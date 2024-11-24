@@ -138,6 +138,14 @@
             transform: translateY(-10px);
         }
 
+        /* Group label styling */
+        .group-label {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -295,34 +303,41 @@
             const leftColumn = document.getElementById("left-column");
             const rightColumn = document.getElementById("right-column");
 
-            groups.forEach((group, index) => {
-                const groupDiv = document.createElement("div");
-                groupDiv.className = `tree-level group${index + 1}`;
-                groupDiv.id = group.id;
-        
-                group.layers.forEach(layer => {
-                    const layerDiv = document.createElement("div");
-                    layerDiv.className = "layer";
-        
-                    layer.forEach(({ alias, label }) => {
-                        // Create the button
-                        const button = document.createElement("button");
-                        button.innerText = label;
-                        button.id = alias;
-        
-                        layerDiv.appendChild(button);
-                    });
-        
-                    groupDiv.appendChild(layerDiv);
-                });
-        
-                // Distribute groups between columns
-                if (index < 4) {
-                    leftColumn.appendChild(groupDiv);
-                } else {
-                    rightColumn.appendChild(groupDiv);
-                }
-            });
+groups.forEach((group, index) => {
+    const groupDiv = document.createElement("div");
+    groupDiv.className = `tree-level group${index + 1}`;
+    groupDiv.id = group.id;
+
+    // Create and add the group label
+    const label = document.createElement("div");
+    label.className = "group-label";
+    label.innerText = `Group ${index + 1}`; // Customize the label text as needed
+    groupDiv.appendChild(label);
+
+    group.layers.forEach(layer => {
+        const layerDiv = document.createElement("div");
+        layerDiv.className = "layer";
+
+        layer.forEach(({ alias, label }) => {
+            // Create the button
+            const button = document.createElement("button");
+            button.innerText = label;
+            button.id = alias;
+
+            layerDiv.appendChild(button);
+        });
+
+        groupDiv.appendChild(layerDiv);
+    });
+
+    // Distribute groups between columns
+    if (index < 4) {
+        leftColumn.appendChild(groupDiv);
+    } else {
+        rightColumn.appendChild(groupDiv);
+    }
+});
+
         }
 
         // Initialize the tree
