@@ -124,16 +124,14 @@
             {
                 id: "group1",
                 layers: [
-                    [{ alias: "1A", label: "Button 1A" }],
-                    [{ alias: "1B", label: "Button 1B" }, { alias: "1C", label: "Button 1C" }],
-                    [{ alias: "1D", label: "Button 1D" }, { alias: "1E", label: "Button 1E" }]
+                    [{ alias: "1A", label: "I need to create an Account Plan" }],
+                    [{ alias: "1B", label: "I need to connect with a contact in an Account" }, { alias: "1C", label: "I need to engage a Partner to break into an Account" }]
                 ]
             },
             {
                 id: "group2",
                 layers: [
-                    [{ alias: "2A", label: "Button 2A" }],
-                    [{ alias: "2B", label: "Button 2B" }, { alias: "2C", label: "Button 2C" }]
+                    [{ alias: "2A", label: "I have connected with someone and I need to qualify the lead" }]
                 ]
             },
             {
@@ -179,10 +177,10 @@
 
         // Define connections between buttons using aliases
         const connections = [
-            { from: "1A", to: "2A" },
-            { from: "1C", to: "2B" },
-            { from: "1E", to: "2C" },
-            { from: "2A", to: "3A" },
+            { from: "1A", to: "1B" },
+            { from: "1A", to: "1C" },
+            { from: "1C", to: "2A" },
+            { from: "1C", to: "2A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
             { from: "3B", to: "4B" }
@@ -212,7 +210,7 @@
                     groupDiv.appendChild(layerDiv);
                 });
 
-                if (index < 5) {
+                if (index < 4) {
                     leftColumn.appendChild(groupDiv);
                 } else {
                     rightColumn.appendChild(groupDiv);
