@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Decision Tree with Aliases</title>
+    <title>Dynamic Decision Tree with Two Columns</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,6 +25,13 @@
             position: relative;
         }
 
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
         .tree-level {
             display: flex;
             flex-direction: column;
@@ -33,19 +40,18 @@
             position: relative;
             padding: 20px;
             border-radius: 10px;
+            min-width: 200px;
         }
 
         /* Pastel colors for groups */
-        .tree-level:nth-child(1) {
-            background-color: #ffebcd; /* beige */
-        }
-        .tree-level:nth-child(2) {
-            background-color: #e6f7ff; /* blue */
-        }
-        .tree-level:nth-child(3) {
-            background-color: #e8ffe6; /* green */
-        }
-        /* Add more colors for additional groups */
+        .tree-level:nth-child(1) { background-color: #ffebcd; /* beige */ }
+        .tree-level:nth-child(2) { background-color: #e6f7ff; /* blue */ }
+        .tree-level:nth-child(3) { background-color: #e8ffe6; /* green */ }
+        .tree-level:nth-child(4) { background-color: #ffe4e1; /* pink */ }
+        .tree-level:nth-child(5) { background-color: #d5e8d4; /* mint */ }
+        .tree-level:nth-child(6) { background-color: #fbe4c2; /* light orange */ }
+        .tree-level:nth-child(7) { background-color: #f4d8e7; /* lavender */ }
+        .tree-level:nth-child(8) { background-color: #d9edf7; /* light teal */ }
 
         .tree-level button {
             padding: 10px 20px;
@@ -75,43 +81,48 @@
     </style>
 </head>
 <body>
-    <h1>Dynamic Decision Tree with Aliases</h1>
-    <p>Define groups, buttons with long names, and connections using aliases.</p>
-    <div class="tree-container" id="tree-container"></div>
+    <h1>Dynamic Decision Tree with Two Columns</h1>
+    <p>Groups are organized into two columns with 4 groups in each column.</p>
+    <div class="tree-container">
+        <div class="column" id="left-column"></div>
+        <div class="column" id="right-column"></div>
+    </div>
 
     <script>
         // Define groups and buttons
         const groups = [
-            { id: "group1", buttons: [
-                { alias: "1A", label: "I need to create an Account Plan" },
-                { alias: "1B", label: "I want to review Sales Metrics" },
-                { alias: "1C", label: "I am preparing for a Client Meeting" },
-            ] },
-            { id: "group2", buttons: [
-                { alias: "2A", label: "Review the current account plan" },
-                { alias: "2B", label: "Gather metrics from the CRM" },
-                { alias: "2C", label: "Prepare a presentation for the client" },
-            ] },
-            { id: "group3", buttons: [
-                { alias: "3A", label: "Finalize and share the account plan" },
-                { alias: "3B", label: "Present insights to stakeholders" },
-                { alias: "3C", label: "Schedule a follow-up with the client" },
-            ] },
+            { id: "group1", buttons: [{ alias: "1A", label: "Create an Account Plan" }, { alias: "1B", label: "Review Sales Metrics" }] },
+            { id: "group2", buttons: [{ alias: "2A", label: "Gather Client Data" }, { alias: "2B", label: "Prepare Meeting Agenda" }] },
+            { id: "group3", buttons: [{ alias: "3A", label: "Analyze CRM Metrics" }, { alias: "3B", label: "Plan Client Presentation" }] },
+            { id: "group4", buttons: [{ alias: "4A", label: "Develop a Sales Strategy" }, { alias: "4B", label: "Submit Action Items" }] },
+            { id: "group5", buttons: [{ alias: "5A", label: "Follow Up with Client" }, { alias: "5B", label: "Send Summary Email" }] },
+            { id: "group6", buttons: [{ alias: "6A", label: "Review Team Feedback" }, { alias: "6B", label: "Update Sales Plan" }] },
+            { id: "group7", buttons: [{ alias: "7A", label: "Refine Metrics" }, { alias: "7B", label: "Prepare Final Presentation" }] },
+            { id: "group8", buttons: [{ alias: "8A", label: "Finalize and Share Outcomes" }, { alias: "8B", label: "Schedule Next Steps" }] },
         ];
 
         // Define connections between buttons using aliases
         const connections = [
             { from: "1A", to: "2A" },
             { from: "1B", to: "2B" },
-            { from: "1C", to: "2C" },
             { from: "2A", to: "3A" },
             { from: "2B", to: "3B" },
-            { from: "2C", to: "3C" },
+            { from: "3A", to: "4A" },
+            { from: "3B", to: "4B" },
+            { from: "4A", to: "5A" },
+            { from: "4B", to: "5B" },
+            { from: "5A", to: "6A" },
+            { from: "5B", to: "6B" },
+            { from: "6A", to: "7A" },
+            { from: "6B", to: "7B" },
+            { from: "7A", to: "8A" },
+            { from: "7B", to: "8B" },
         ];
 
         // Render groups and buttons dynamically
         function renderTree() {
-            const container = document.getElementById("tree-container");
+            const leftColumn = document.getElementById("left-column");
+            const rightColumn = document.getElementById("right-column");
 
             groups.forEach((group, index) => {
                 const groupDiv = document.createElement("div");
@@ -125,13 +136,18 @@
                     groupDiv.appendChild(button);
                 });
 
-                container.appendChild(groupDiv);
+                // Distribute groups between columns
+                if (index < 4) {
+                    leftColumn.appendChild(groupDiv);
+                } else {
+                    rightColumn.appendChild(groupDiv);
+                }
             });
         }
 
         // Draw SVG lines between buttons
         function drawLines() {
-            const container = document.getElementById("tree-container");
+            const container = document.querySelector(".tree-container");
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             container.appendChild(svg);
 
