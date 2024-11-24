@@ -225,36 +225,36 @@
         
         // Draw SVG lines between buttons
     function drawLines() {
-        const container = document.querySelector(".tree-container");
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        container.appendChild(svg);
-    
-        connections.forEach(({ from, to }) => {
-            const startButton = document.getElementById(from);
-            const endButton = document.getElementById(to);
-    
-            if (startButton && endButton) {
-                const start = startButton.getBoundingClientRect();
-                const end = endButton.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-    
-                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
-                line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
-                line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
-                line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
-    
-                line.classList.add("line");
-                line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`); // Add dynamic tooltip
-                line.setAttribute("data-from", from);
-                line.setAttribute("data-to", to);
-    
-                svg.appendChild(line);
-            }
-        });
-    
-        addLineTooltips(); // Initialize tooltips for lines
-    }
+            const container = document.querySelector(".tree-container");
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            container.appendChild(svg);
+
+            connections.forEach(({ from, to }) => {
+                const startButton = document.getElementById(from);
+                const endButton = document.getElementById(to);
+
+                if (startButton && endButton) {
+                    const start = startButton.getBoundingClientRect();
+                    const end = endButton.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
+                    line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
+                    line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
+                    line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+
+                    line.classList.add("line");
+                    line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`);
+                    line.setAttribute("data-from", from);
+                    line.setAttribute("data-to", to);
+
+                    svg.appendChild(line);
+                }
+            });
+
+            addLineTooltips(); // Initialize tooltips for lines
+        }
 
 
         // Add interactivity for highlighting
@@ -352,19 +352,22 @@
         }
 
         function addLineTooltips() {
+            const container = document.querySelector(".tree-container");
+            const svg = container.querySelector("svg");
+
             document.querySelectorAll('.line').forEach(line => {
                 const tooltip = document.createElement('div');
                 tooltip.className = 'tooltip';
-                tooltip.innerText = line.getAttribute('data-tooltip'); // Get tooltip text from data-tooltip
+                tooltip.innerText = line.getAttribute('data-tooltip'); // Use data-tooltip for text
                 document.body.appendChild(tooltip);
-        
+
                 line.addEventListener('mouseover', (event) => {
-                    const rect = event.target.getBoundingClientRect();
-                    tooltip.style.left = `${(rect.left + rect.right) / 2}px`; // Position tooltip at the midpoint of the line
-                    tooltip.style.top = `${rect.top - 10}px`; // Position tooltip above the line
+                    const rect = line.getBoundingClientRect();
+                    tooltip.style.left = `${(rect.left + rect.right) / 2}px`;
+                    tooltip.style.top = `${rect.top - 20}px`; // Position above the line
                     tooltip.classList.add('visible');
                 });
-        
+
                 line.addEventListener('mouseout', () => {
                     tooltip.classList.remove('visible');
                 });
