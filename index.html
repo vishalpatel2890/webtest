@@ -227,54 +227,97 @@
             { from: "3A", to: "4A" },
             { from: "3B", to: "4B" }
         ];
-        
+
+        // Function to add tooltips to buttons
+        function addButtonTooltips() {
+            document.querySelectorAll('.info-icon').forEach(icon => {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.innerText = icon.dataset.tooltip;
+                document.body.appendChild(tooltip);
+    
+                icon.addEventListener('mouseover', (event) => {
+                    const rect = event.target.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+                    tooltip.style.top = `${rect.top - 10}px`;
+                    tooltip.classList.add('visible');
+                });
+    
+                icon.addEventListener('mouseout', () => {
+                    tooltip.classList.remove('visible');
+                });
+            });
+        }
+    
+        // Function to add tooltips to lines
+        function addLineTooltips() {
+            const lines = document.querySelectorAll(".line");
+            
+            lines.forEach(line => {
+                const tooltip = document.createElement("div");
+                tooltip.className = "tooltip";
+                tooltip.innerText = line.dataset.tooltip;
+                document.body.appendChild(tooltip);
+    
+                line.addEventListener("mouseover", (event) => {
+                    const rect = line.getBoundingClientRect();
+                    tooltip.style.left = `${(rect.left + rect.right) / 2}px`;
+                    tooltip.style.top = `${rect.top - 20}px`;
+                    tooltip.classList.add("visible");
+                });
+    
+                line.addEventListener("mouseout", () => {
+                    tooltip.classList.remove("visible");
+                });
+            });
+        }
+    
         // Draw SVG lines between buttons
-    function drawLines() {
+        function drawLines() {
             const container = document.querySelector(".tree-container");
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             container.appendChild(svg);
-
+    
             connections.forEach(({ from, to }) => {
                 const startButton = document.getElementById(from);
                 const endButton = document.getElementById(to);
-
+    
                 if (startButton && endButton) {
                     const start = startButton.getBoundingClientRect();
                     const end = endButton.getBoundingClientRect();
                     const containerRect = container.getBoundingClientRect();
-
+    
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
                     line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
                     line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
                     line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
-
+    
                     line.classList.add("line");
                     line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`);
                     line.setAttribute("data-from", from);
                     line.setAttribute("data-to", to);
-
+    
                     svg.appendChild(line);
                 }
             });
-
+    
             addLineTooltips(); // Initialize tooltips for lines
         }
-
-
+    
         // Add interactivity for highlighting
         function addInteractivity() {
             const buttons = document.querySelectorAll("button");
             const lines = document.querySelectorAll(".line");
-
+    
             buttons.forEach(button => {
                 button.addEventListener("mouseover", () => {
                     const fromLines = Array.from(lines).filter(line => line.getAttribute("data-from") === button.id);
                     const toLines = Array.from(lines).filter(line => line.getAttribute("data-to") === button.id);
-
+    
                     buttons.forEach(btn => btn.classList.add("dim"));
                     lines.forEach(line => line.classList.add("dim"));
-
+    
                     button.classList.remove("dim");
                     fromLines.concat(toLines).forEach(line => line.classList.add("highlight"));
                     fromLines.concat(toLines).forEach(line => {
@@ -284,103 +327,58 @@
                         document.getElementById(connectedId).classList.remove("dim");
                     });
                 });
-
+    
                 button.addEventListener("mouseout", () => {
                     buttons.forEach(btn => btn.classList.remove("dim"));
                     lines.forEach(line => line.classList.remove("dim", "highlight"));
                 });
             });
         }
-        
+    
         // Render groups and buttons dynamically
         function renderTree() {
             const leftColumn = document.getElementById("left-column");
             const rightColumn = document.getElementById("right-column");
-
+    
             groups.forEach((group, index) => {
                 const groupDiv = document.createElement("div");
                 groupDiv.className = `tree-level group${index + 1}`;
                 groupDiv.id = group.id;
-        
+    
                 group.layers.forEach(layer => {
                     const layerDiv = document.createElement("div");
                     layerDiv.className = "layer";
-        
+    
                     layer.forEach(({ alias, label }) => {
                         // Create the button
                         const button = document.createElement("button");
                         button.innerText = label;
                         button.id = alias;
-        
+    
                         // Add the tooltip icon
                         const infoIcon = document.createElement("span");
                         infoIcon.className = "info-icon";
                         infoIcon.dataset.tooltip = `Tooltip for ${label}`; // Use dynamic tooltip text
                         infoIcon.innerText = "i";
-        
+    
                         button.appendChild(infoIcon); // Add icon to button
                         layerDiv.appendChild(button);
                     });
-        
+    
                     groupDiv.appendChild(layerDiv);
                 });
-        
+    
                 // Distribute groups between columns
                 if (index < 4) {
                     leftColumn.appendChild(groupDiv);
                 } else {
                     rightColumn.appendChild(groupDiv);
                 }
-        });
+            });
     
-        addButtonTooltips(); // Call this to initialize tooltips for buttons
+            addButtonTooltips(); // Call this to initialize tooltips for buttons
         }
-
-        function addButtonTooltips() {
-            document.querySelectorAll('.info-icon').forEach(icon => {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'tooltip';
-                tooltip.innerText = icon.dataset.tooltip;
-                document.body.appendChild(tooltip);
-        
-                icon.addEventListener('mouseover', (event) => {
-                    const rect = event.target.getBoundingClientRect();
-                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
-                    tooltip.style.top = `${rect.top - 10}px`;
-                    tooltip.classList.add('visible');
-                });
-        
-                icon.addEventListener('mouseout', () => {
-                    tooltip.classList.remove('visible');
-                });
-            });
-        }
-
-        function addLineTooltips() {
-            const lines = document.querySelectorAll(".line");
-            
-            lines.forEach(line => {
-                console.log(line);
-                const tooltip = document.createElement("div");
-                tooltip.className = "tooltip";
-                document.body.appendChild(tooltip);
-
-                line.addEventListener("mouseover", (event) => {
-                    tooltip.innerText = line.dataset.tooltip;
-                    const rect = line.getBoundingClientRect();
-                    tooltip.style.left = `${(rect.left + rect.right) / 2}px`;
-                    tooltip.style.top = `${rect.top - 20}px`;
-                    tooltip.classList.add("visible");
-                });
-
-                line.addEventListener("mouseout", () => {
-                    tooltip.classList.remove("visible");
-                });
-            });
-        }
-
-        
-
+    
         // Initialize the tree
         window.onload = function () {
             renderTree();
@@ -388,5 +386,5 @@
             addInteractivity();
         };
     </script>
-</body>
+    </body>
 </html>
