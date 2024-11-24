@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Decision Tree</title>
+    <title>Dynamic Decision Tree</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,18 +35,17 @@
             border-radius: 10px;
         }
 
-        /* Background colors for groups */
-        #stage1 {
-            background-color: #ffebcd; /* pastel beige */
+        /* Pastel colors for groups */
+        .tree-level:nth-child(1) {
+            background-color: #ffebcd; /* beige */
         }
-
-        #stage2 {
-            background-color: #e6f7ff; /* pastel blue */
+        .tree-level:nth-child(2) {
+            background-color: #e6f7ff; /* blue */
         }
-
-        #stage3 {
-            background-color: #e8ffe6; /* pastel green */
+        .tree-level:nth-child(3) {
+            background-color: #e8ffe6; /* green */
         }
+        /* Add more colors for additional groups */
 
         .tree-level button {
             padding: 10px 20px;
@@ -74,78 +73,81 @@
     </style>
 </head>
 <body>
-    <h1>Interactive Decision Tree</h1>
-    <p>Follow the flow by clicking buttons and observing conditional navigation.</p>
-    <div class="tree-container" id="tree-container">
-        <!-- Stage 1 -->
-        <div class="tree-level" id="stage1">
-            <button onclick="navigate('1A')">1A</button>
-            <button onclick="navigate('1B')">1B</button>
-            <button onclick="navigate('1C')">1C</button>
-        </div>
-
-        <!-- Stage 2 -->
-        <div class="tree-level" id="stage2">
-            <button data-parent="1C" onclick="navigate('2A')">2A</button>
-            <button data-parent="1B" onclick="navigate('2B')">2B</button>
-            <button data-parent="1A" onclick="navigate('2C')">2C</button>
-        </div>
-
-        <!-- Stage 3 -->
-        <div class="tree-level" id="stage3">
-            <button data-parent="2A">3A</button>
-            <button data-parent="2B">3B</button>
-            <button data-parent="2C">3C</button>
-        </div>
-    </div>
+    <h1>Dynamic Decision Tree</h1>
+    <p>Define your groups, buttons, and connections dynamically.</p>
+    <div class="tree-container" id="tree-container"></div>
 
     <script>
-        // Function to handle navigation between stages
-        function navigate(currentStage) {
-            // Highlight the next stage buttons based on the current selection
-            const buttons = document.querySelectorAll(`[data-parent="${currentStage}"]`);
-            buttons.forEach(button => {
-                button.style.backgroundColor = "#007bff";
-                button.style.color = "#ffffff";
+        // Define groups and buttons
+        const groups = [
+            { id: "group1", buttons: ["1A", "1B", "1C"] },
+            { id: "group2", buttons: ["2A", "2B", "2C"] },
+            { id: "group3", buttons: ["3A", "3B", "3C"] },
+            // Add more groups as needed
+        ];
+
+        // Define connections between buttons
+        const connections = [
+            { from: "1A", to: "2B" },
+            { from: "1C", to: "2A" },
+            { from: "2A", to: "3C" },
+            { from: "1A", to: "3C" }, // Example of a cross-group connection
+            // Add more connections as needed
+        ];
+
+        // Render groups and buttons dynamically
+        function renderTree() {
+            const container = document.getElementById("tree-container");
+
+            groups.forEach((group, index) => {
+                const groupDiv = document.createElement("div");
+                groupDiv.className = "tree-level";
+                groupDiv.id = group.id;
+
+                group.buttons.forEach((buttonLabel) => {
+                    const button = document.createElement("button");
+                    button.innerText = buttonLabel;
+                    button.id = buttonLabel;
+                    groupDiv.appendChild(button);
+                });
+
+                container.appendChild(groupDiv);
             });
         }
 
-        // Draw SVG lines between stages dynamically
+        // Draw SVG lines between buttons
         function drawLines() {
-            const container = document.getElementById('tree-container');
+            const container = document.getElementById("tree-container");
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             container.appendChild(svg);
 
-            const stages = Array.from(container.children);
-            for (let i = 0; i < stages.length - 1; i++) {
-                const currentStage = stages[i].children;
-                const nextStage = stages[i + 1].children;
+            connections.forEach(({ from, to }) => {
+                const startButton = document.getElementById(from);
+                const endButton = document.getElementById(to);
 
-                for (let button of currentStage) {
-                    for (let nextButton of nextStage) {
-                        if (nextButton.getAttribute('data-parent') === button.innerText) {
-                            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                            const start = button.getBoundingClientRect();
-                            const end = nextButton.getBoundingClientRect();
+                if (startButton && endButton) {
+                    const start = startButton.getBoundingClientRect();
+                    const end = endButton.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
 
-                            const containerRect = container.getBoundingClientRect();
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
+                    line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
+                    line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
+                    line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+                    line.setAttribute("stroke", "#ccc");
+                    line.setAttribute("stroke-width", "2");
 
-                            line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
-                            line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
-                            line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
-                            line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
-                            line.setAttribute("stroke", "#ccc");
-                            line.setAttribute("stroke-width", "2");
-
-                            svg.appendChild(line);
-                        }
-                    }
+                    svg.appendChild(line);
                 }
-            }
+            });
         }
 
-        // Wait for DOM content to load before drawing lines
-        window.onload = drawLines;
+        // Initialize the tree
+        window.onload = function () {
+            renderTree();
+            drawLines();
+        };
     </script>
 </body>
 </html>
