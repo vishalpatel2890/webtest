@@ -213,7 +213,8 @@
             { from: "1C", to: "2A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
-            { from: "3B", to: "4B" }
+            { from: "3B", to: "4B" },
+            { from: "6B", to: "8B" }
         ];
         
         // Draw SVG lines between buttons
@@ -238,7 +239,6 @@
                     line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
 
                     line.classList.add("line");
-                    line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`);
                     line.setAttribute("data-from", from);
                     line.setAttribute("data-to", to);
 
@@ -270,16 +270,16 @@
                             ? line.getAttribute("data-to")
                             : line.getAttribute("data-from");
                         document.getElementById(connectedId).classList.remove("dim");
-
-                        // Show tooltip for the line
-                        tooltip.innerText = line.dataset.tooltip;
-                        const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
-                        const targetColumn = document.getElementById(column);
-                        const columnRect = targetColumn.getBoundingClientRect();
-                        tooltip.style.left = `${columnRect.left + columnRect.width / 4}px`;
-                        tooltip.style.top = `${columnRect.top + columnRect.height / 2}px`;
-                        tooltip.classList.add("visible");
                     });
+
+                    // Show tooltip for the button
+                    tooltip.innerText = button.innerText;
+                    const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
+                    const targetColumn = document.getElementById(column);
+                    const columnRect = targetColumn.getBoundingClientRect();
+                    tooltip.style.left = `${columnRect.left + columnRect.width / 4}px`;
+                    tooltip.style.top = `${columnRect.top + columnRect.height / 2}px`;
+                    tooltip.classList.add("visible");
                 });
 
                 button.addEventListener("mouseout", () => {
