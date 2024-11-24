@@ -33,58 +33,6 @@
             margin: 0 20px;
         }
 
-        .tree-level {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            position: relative;
-            min-width: 200px;
-        }
-
-        .layer {
-            display: flex;
-            flex-wrap: wrap; /* Allow buttons to wrap to the next line if needed */
-            gap: 10px;
-            justify-content: center;
-            align-items: flex-start; /* Align items at the top */
-        }
-
-
-        /* Unique pastel colors for each group */
-        .group1 { background-color: #ffe4e1; }
-        .group2 { background-color: #e6f7ff; }
-        .group3 { background-color: #e8ffe6; }
-        .group4 { background-color: #fffacd; }
-        .group5 { background-color: #ffebcd; }
-        .group6 { background-color: #d5e8d4; }
-        .group7 { background-color: #fbe4c2; }
-        .group8 { background-color: #f4d8e7; }
-
-    .tree-level button {
-        padding: 10px 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #ffffff;
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 14px;
-        text-align: center;
-        word-wrap: break-word;
-        white-space: normal; /* Allow text to wrap */
-        max-width: 150px; /* Set a max width to control button size */
-        display: inline-block; /* Ensure buttons behave like inline elements */
-        z-index: 2;
-    }
-
-
-        .tree-level button:hover {
-            background-color: #007bff;
-            color: white;
-        }
-
         svg {
             position: absolute;
             top: 0;
@@ -92,15 +40,6 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            pointer-events: none;
-        }
-
-        .highlight {
-            opacity: 1 !important;
-        }
-
-        .dim {
-            opacity: 0.2;
         }
 
         .line {
@@ -109,12 +48,11 @@
             transition: opacity 0.3s ease;
         }
 
-        .line.highlight {
+        .line:hover {
             stroke: #007bff;
             stroke-width: 3;
         }
 
-        /* Tooltip styling */
         .tooltip {
             position: absolute;
             background-color: #333;
@@ -127,104 +65,52 @@
             pointer-events: none;
             transform: translate(-50%, -10px);
             transition: opacity 0.2s ease, transform 0.2s ease;
-            z-index: 3; /* Ensure tooltips are above everything */
+            z-index: 3;
         }
-        
+
         .tooltip.visible {
             opacity: 1;
             transform: translate(-50%, 0);
         }
-
-        
-        /* Position for the info icon */
-        .info-icon {
-            margin-left: 5px;
-            font-size: 12px;
-            color: #007bff;
-            cursor: pointer;
-            position: relative;
-        }
-
     </style>
 </head>
 <body>
     <h1>Interactive Decision Tree</h1>
-    <p>Hover over a button to highlight connected lines and buttons.</p>
     <div class="tree-container">
         <div class="column" id="left-column"></div>
         <div class="column" id="right-column"></div>
     </div>
 
     <script>
-        // Define groups with layers of buttons
         const groups = [
-            {
-                id: "group1",
-                layers: [
-                    [{ alias: "1A", label: "I need to create an Account Plan" }],
-                    [{ alias: "1B", label: "I need to connect with a contact in an Account" }, { alias: "1C", label: "I need to engage a Partner to break into an Account" }]
-                ]
-            },
-            {
-                id: "group2",
-                layers: [
-                    [{ alias: "2A", label: "I have connected with someone and I need to qualify the lead" }]
-                ]
-            },
-            {
-                id: "group3",
-                layers: [
-                    [{ alias: "3A", label: "Button 3A" }, { alias: "3B", label: "Button 3B" }]
-                ]
-            },
-            {
-                id: "group4",
-                layers: [
-                    [{ alias: "4A", label: "Button 4A" }],
-                    [{ alias: "4B", label: "Button 4B" }]
-                ]
-            },
-            {
-                id: "group5",
-                layers: [
-                    [{ alias: "5A", label: "Button 5A" }, { alias: "5B", label: "Button 5B" }]
-                ]
-            },
-            {
-                id: "group6",
-                layers: [
-                    [{ alias: "6A", label: "Button 6A" }],
-                    [{ alias: "6B", label: "Button 6B" }]
-                ]
-            },
-            {
-                id: "group7",
-                layers: [
-                    [{ alias: "7A", label: "Button 7A" }],
-                    [{ alias: "7B", label: "Button 7B" }]
-                ]
-            },
-            {
-                id: "group8",
-                layers: [
-                    [{ alias: "8A", label: "Button 8A" }, { alias: "8B", label: "Button 8B" }]
-                ]
-            }
+            { id: "group1", layers: [{ alias: "1A", label: "Button 1A" }] },
+            { id: "group2", layers: [{ alias: "2A", label: "Button 2A" }] }
         ];
 
-        // Define connections between buttons using aliases
         const connections = [
-            { from: "1A", to: "1B" },
-            { from: "1A", to: "1C" },
-            { from: "1B", to: "2A" },
-            { from: "1C", to: "2A" },
-            { from: "2B", to: "3B" },
-            { from: "3A", to: "4A" },
-            { from: "3B", to: "4B" }
+            { from: "1A", to: "2A" }
         ];
-        
-        // Draw SVG lines between buttons
-    function drawLines() {
+
+        function renderTree() {
+            const leftColumn = document.getElementById("left-column");
+            const rightColumn = document.getElementById("right-column");
+
+            groups.forEach((group, index) => {
+                const column = index % 2 === 0 ? leftColumn : rightColumn;
+                const groupDiv = document.createElement("div");
+
+                group.layers.forEach(layer => {
+                    const button = document.createElement("button");
+                    button.innerText = layer.label;
+                    button.id = layer.alias;
+                    groupDiv.appendChild(button);
+                });
+
+                column.appendChild(groupDiv);
+            });
+        }
+
+        function drawLines() {
             const container = document.querySelector(".tree-container");
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             container.appendChild(svg);
@@ -234,153 +120,49 @@
                 const endButton = document.getElementById(to);
 
                 if (startButton && endButton) {
-                    const start = startButton.getBoundingClientRect();
-                    const end = endButton.getBoundingClientRect();
+                    const startRect = startButton.getBoundingClientRect();
+                    const endRect = endButton.getBoundingClientRect();
                     const containerRect = container.getBoundingClientRect();
 
                     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                    line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
-                    line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
-                    line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
-                    line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+                    line.setAttribute("x1", startRect.left + startRect.width / 2 - containerRect.left);
+                    line.setAttribute("y1", startRect.top + startRect.height / 2 - containerRect.top);
+                    line.setAttribute("x2", endRect.left + endRect.width / 2 - containerRect.left);
+                    line.setAttribute("y2", endRect.top + endRect.height / 2 - containerRect.top);
 
                     line.classList.add("line");
-                    line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`);
-                    line.setAttribute("data-from", from);
-                    line.setAttribute("data-to", to);
-
+                    line.dataset.tooltip = `Connection from ${from} to ${to}`;
                     svg.appendChild(line);
                 }
             });
 
-            addLineTooltips(); // Initialize tooltips for lines
-        }
-
-
-        // Add interactivity for highlighting
-        function addInteractivity() {
-            const buttons = document.querySelectorAll("button");
-            const lines = document.querySelectorAll(".line");
-
-            buttons.forEach(button => {
-                button.addEventListener("mouseover", () => {
-                    const fromLines = Array.from(lines).filter(line => line.getAttribute("data-from") === button.id);
-                    const toLines = Array.from(lines).filter(line => line.getAttribute("data-to") === button.id);
-
-                    buttons.forEach(btn => btn.classList.add("dim"));
-                    lines.forEach(line => line.classList.add("dim"));
-
-                    button.classList.remove("dim");
-                    fromLines.concat(toLines).forEach(line => line.classList.add("highlight"));
-                    fromLines.concat(toLines).forEach(line => {
-                        const connectedId = line.getAttribute("data-from") === button.id
-                            ? line.getAttribute("data-to")
-                            : line.getAttribute("data-from");
-                        document.getElementById(connectedId).classList.remove("dim");
-                    });
-                });
-
-                button.addEventListener("mouseout", () => {
-                    buttons.forEach(btn => btn.classList.remove("dim"));
-                    lines.forEach(line => line.classList.remove("dim", "highlight"));
-                });
-            });
-        }
-        
-        // Render groups and buttons dynamically
-        function renderTree() {
-            const leftColumn = document.getElementById("left-column");
-            const rightColumn = document.getElementById("right-column");
-
-            groups.forEach((group, index) => {
-                const groupDiv = document.createElement("div");
-                groupDiv.className = `tree-level group${index + 1}`;
-                groupDiv.id = group.id;
-        
-                group.layers.forEach(layer => {
-                    const layerDiv = document.createElement("div");
-                    layerDiv.className = "layer";
-        
-                    layer.forEach(({ alias, label }) => {
-                        // Create the button
-                        const button = document.createElement("button");
-                        button.innerText = label;
-                        button.id = alias;
-        
-                        // Add the tooltip icon
-                        const infoIcon = document.createElement("span");
-                        infoIcon.className = "info-icon";
-                        infoIcon.dataset.tooltip = `Tooltip for ${label}`; // Use dynamic tooltip text
-                        infoIcon.innerText = "i";
-        
-                        button.appendChild(infoIcon); // Add icon to button
-                        layerDiv.appendChild(button);
-                    });
-        
-                    groupDiv.appendChild(layerDiv);
-                });
-        
-                // Distribute groups between columns
-                if (index < 4) {
-                    leftColumn.appendChild(groupDiv);
-                } else {
-                    rightColumn.appendChild(groupDiv);
-                }
-        });
-    
-        addButtonTooltips(); // Call this to initialize tooltips for buttons
-        }
-
-        function addButtonTooltips() {
-            document.querySelectorAll('.info-icon').forEach(icon => {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'tooltip';
-                tooltip.innerText = icon.dataset.tooltip;
-                document.body.appendChild(tooltip);
-        
-                icon.addEventListener('mouseover', (event) => {
-                    const rect = event.target.getBoundingClientRect();
-                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
-                    tooltip.style.top = `${rect.top - 10}px`;
-                    tooltip.classList.add('visible');
-                });
-        
-                icon.addEventListener('mouseout', () => {
-                    tooltip.classList.remove('visible');
-                });
-            });
+            addLineTooltips();
         }
 
         function addLineTooltips() {
-            const container = document.querySelector(".tree-container");
-            const svg = container.querySelector("svg");
+            const lines = document.querySelectorAll(".line");
+            const tooltip = document.createElement("div");
+            tooltip.className = "tooltip";
+            document.body.appendChild(tooltip);
 
-            document.querySelectorAll('.line').forEach(line => {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'tooltip';
-                tooltip.innerText = line.getAttribute('data-tooltip'); // Use data-tooltip for text
-                document.body.appendChild(tooltip);
-
-                line.addEventListener('mouseover', (event) => {
+            lines.forEach(line => {
+                line.addEventListener("mouseover", (event) => {
+                    tooltip.innerText = line.dataset.tooltip;
                     const rect = line.getBoundingClientRect();
                     tooltip.style.left = `${(rect.left + rect.right) / 2}px`;
-                    tooltip.style.top = `${rect.top - 20}px`; // Position above the line
-                    tooltip.classList.add('visible');
+                    tooltip.style.top = `${rect.top - 20}px`;
+                    tooltip.classList.add("visible");
                 });
 
-                line.addEventListener('mouseout', () => {
-                    tooltip.classList.remove('visible');
+                line.addEventListener("mouseout", () => {
+                    tooltip.classList.remove("visible");
                 });
             });
         }
 
-        
-
-        // Initialize the tree
         window.onload = function () {
             renderTree();
             drawLines();
-            addInteractivity();
         };
     </script>
 </body>
