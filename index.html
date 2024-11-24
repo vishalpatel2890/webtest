@@ -245,16 +245,31 @@
                 line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
     
                 line.classList.add("line");
-                line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`); // Add dynamic tooltip
-                line.setAttribute("data-from", from);
-                line.setAttribute("data-to", to);
+                line.setAttribute("data-tooltip", `Connection from ${from} to ${to}`); // Tooltip content
     
                 svg.appendChild(line);
+    
+                // Add tooltip events
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.innerText = `Connection from ${from} to ${to}`;
+                document.body.appendChild(tooltip);
+    
+                line.addEventListener('mouseover', (event) => {
+                    const rect = event.target.getBoundingClientRect();
+                    tooltip.style.left = `${(rect.left + rect.right) / 2}px`; // Position tooltip at the midpoint of the line
+                    tooltip.style.top = `${rect.top - 10}px`; // Position tooltip above the line
+                    tooltip.classList.add('visible');
+                });
+    
+                line.addEventListener('mouseout', () => {
+                    tooltip.classList.remove('visible');
+                });
             }
         });
-    
-        addLineTooltips(); // Initialize tooltips for lines
+    addLineTooltips()
     }
+
 
 
         // Add interactivity for highlighting
