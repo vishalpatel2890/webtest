@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexible Decision Tree with Layers and Lines</title>
+    <title>Interactive Decision Tree</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
             flex-direction: column;
             gap: 20px;
             flex: 1;
-            margin: 0 20px; /* Adds space between the columns */
+            margin: 0 20px;
         }
 
         .tree-level {
@@ -42,12 +42,11 @@
             border-radius: 10px;
             position: relative;
             min-width: 200px;
-            z-index: 1; /* Ensure background is below the lines */
         }
 
         .layer {
             display: flex;
-            flex-wrap: wrap; /* Allows horizontal alignment of buttons in a layer */
+            flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
         }
@@ -72,7 +71,8 @@
             font-size: 14px;
             text-align: center;
             word-wrap: break-word;
-            z-index: 2;
+            position: relative;
+            z-index: 2; /* Buttons appear above lines */
         }
 
         .tree-level button:hover {
@@ -86,14 +86,33 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 3; /* Lines are above the background boxes */
-            pointer-events: none; /* Allows clicks to pass through the lines */
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .highlight {
+            opacity: 1 !important;
+        }
+
+        .dim {
+            opacity: 0.2;
+        }
+
+        .line {
+            stroke: #ccc;
+            stroke-width: 2;
+            transition: opacity 0.3s ease;
+        }
+
+        .line.highlight {
+            stroke: #007bff;
+            stroke-width: 3;
         }
     </style>
 </head>
 <body>
-    <h1>Flexible Decision Tree with Layers and Lines</h1>
-    <p>Lines are rendered above the background boxes, and columns are spaced apart.</p>
+    <h1>Interactive Decision Tree</h1>
+    <p>Hover over a button to highlight connected lines and buttons.</p>
     <div class="tree-container">
         <div class="column" id="left-column"></div>
         <div class="column" id="right-column"></div>
@@ -166,15 +185,7 @@
             { from: "2A", to: "3A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
-            { from: "3B", to: "4B" },
-            { from: "4A", to: "5A" },
-            { from: "4B", to: "5B" },
-            { from: "5A", to: "6A" },
-            { from: "5B", to: "6B" },
-            { from: "6A", to: "7A" },
-            { from: "6B", to: "7B" },
-            { from: "7A", to: "8A" },
-            { from: "7B", to: "8B" }
+            { from: "3B", to: "4B" }
         ];
 
         // Render groups and buttons dynamically
@@ -201,8 +212,7 @@
                     groupDiv.appendChild(layerDiv);
                 });
 
-                // Distribute groups between columns
-                if (index < 4) {
+                if (index < 2) {
                     leftColumn.appendChild(groupDiv);
                 } else {
                     rightColumn.appendChild(groupDiv);
@@ -230,11 +240,42 @@
                     line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
                     line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
                     line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
-                    line.setAttribute("stroke", "#ccc");
-                    line.setAttribute("stroke-width", "2");
+                    line.classList.add("line");
+                    line.setAttribute("data-from", from);
+                    line.setAttribute("data-to", to);
 
                     svg.appendChild(line);
                 }
+            });
+        }
+
+        // Add interactivity for highlighting
+        function addInteractivity() {
+            const buttons = document.querySelectorAll("button");
+            const lines = document.querySelectorAll(".line");
+
+            buttons.forEach(button => {
+                button.addEventListener("mouseover", () => {
+                    const fromLines = Array.from(lines).filter(line => line.getAttribute("data-from") === button.id);
+                    const toLines = Array.from(lines).filter(line => line.getAttribute("data-to") === button.id);
+
+                    buttons.forEach(btn => btn.classList.add("dim"));
+                    lines.forEach(line => line.classList.add("dim"));
+
+                    button.classList.remove("dim");
+                    fromLines.concat(toLines).forEach(line => line.classList.add("highlight"));
+                    fromLines.concat(toLines).forEach(line => {
+                        const connectedId = line.getAttribute("data-from") === button.id
+                            ? line.getAttribute("data-to")
+                            : line.getAttribute("data-from");
+                        document.getElementById(connectedId).classList.remove("dim");
+                    });
+                });
+
+                button.addEventListener("mouseout", () => {
+                    buttons.forEach(btn => btn.classList.remove("dim"));
+                    lines.forEach(line => line.classList.remove("dim", "highlight"));
+                });
             });
         }
 
@@ -242,6 +283,7 @@
         window.onload = function () {
             renderTree();
             drawLines();
+            addInteractivity();
         };
     </script>
 </body>
