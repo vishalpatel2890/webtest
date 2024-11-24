@@ -188,8 +188,8 @@
                 id: "group4",
                 group_label: "2.0 Solutioning",
                 layers: [
-                    [{ alias: "4A", label: "Button 4A" }],
-                    [{ alias: "4B", label: "Button 4B" }]
+                    [{ alias: "4A", label: "Button 4A" }, { alias: "4B", label: "Button 4B" }],
+                
                 ]
             },
             {
@@ -237,10 +237,12 @@
             { from: "1A", to: "1C" },
             { from: "1B", to: "2A" },
             { from: "1C", to: "2A" },
-            { from: "2B", to: "3B" },
-            { from: "3A", to: "4A" },
-            { from: "3B", to: "4B" },
-            { from: "6B", to: "8B" }
+            { from: "2A", to: "3A" },
+            { from: "3A", to: "3B" },
+            { from: "3B", to: "3C" },
+            { from: "3C", to: "4A" },
+            { from: "3C", to: "4B" }
+            
         ];
         
         // Draw SVG lines between buttons
