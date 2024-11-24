@@ -46,10 +46,12 @@
 
         .layer {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allow buttons to wrap to the next line if needed */
             gap: 10px;
             justify-content: center;
+            align-items: flex-start; /* Align items at the top */
         }
+
 
         /* Unique pastel colors for each group */
         .group1 { background-color: #ffe4e1; }
@@ -61,19 +63,22 @@
         .group7 { background-color: #fbe4c2; }
         .group8 { background-color: #f4d8e7; }
 
-        .tree-level button {
-            padding: 10px 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #ffffff;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 14px;
-            text-align: center;
-            word-wrap: break-word;
-            position: relative;
-            z-index: 2; /* Buttons appear above lines */
-        }
+    .tree-level button {
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ffffff;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+        text-align: center;
+        word-wrap: break-word;
+        white-space: normal; /* Allow text to wrap */
+        max-width: 150px; /* Set a max width to control button size */
+        display: inline-block; /* Ensure buttons behave like inline elements */
+        z-index: 2;
+    }
+
 
         .tree-level button:hover {
             background-color: #007bff;
@@ -179,7 +184,7 @@
         const connections = [
             { from: "1A", to: "1B" },
             { from: "1A", to: "1C" },
-            { from: "1C", to: "2A" },
+            { from: "1B", to: "2A" },
             { from: "1C", to: "2A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
