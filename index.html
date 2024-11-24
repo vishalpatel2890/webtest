@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexible Decision Tree with Layers</title>
+    <title>Flexible Decision Tree with Layers and Lines</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,6 +30,7 @@
             flex-direction: column;
             gap: 20px;
             flex: 1;
+            margin: 0 20px; /* Adds space between the columns */
         }
 
         .tree-level {
@@ -41,6 +42,7 @@
             border-radius: 10px;
             position: relative;
             min-width: 200px;
+            z-index: 1; /* Ensure background is below the lines */
         }
 
         .layer {
@@ -83,13 +85,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 2; /* Lines are above the background boxes */
+            pointer-events: none; /* Allows clicks to pass through the lines */
         }
     </style>
 </head>
 <body>
-    <h1>Flexible Decision Tree with Layers</h1>
-    <p>Each group can have multiple layers of horizontally aligned buttons.</p>
+    <h1>Flexible Decision Tree with Layers and Lines</h1>
+    <p>Lines are rendered above the background boxes, and columns are spaced apart.</p>
     <div class="tree-container">
         <div class="column" id="left-column"></div>
         <div class="column" id="right-column"></div>
@@ -156,10 +159,10 @@
 
         // Define connections between buttons using aliases
         const connections = [
-            { from: "1A", to: "1B" },
-            { from: "1C", to: "2C" },
+            { from: "1A", to: "2A" },
+            { from: "1C", to: "2B" },
             { from: "1E", to: "2C" },
-            { from: "2A", to: "2B" },
+            { from: "2A", to: "3A" },
             { from: "2B", to: "3B" },
             { from: "3A", to: "4A" },
             { from: "3B", to: "4B" },
