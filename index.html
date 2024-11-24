@@ -122,29 +122,20 @@
             position: absolute;
             background-color: #333;
             color: #fff;
-            padding: 5px 10px;
+            padding: 10px 20px;
             border-radius: 5px;
-            font-size: 12px;
-            white-space: nowrap;
+            font-size: 14px;
+            width: 45%;
+            white-space: normal;
             opacity: 0;
             pointer-events: none;
-            transform: translate(-50%, -10px);
             transition: opacity 0.2s ease, transform 0.2s ease;
             z-index: 3; /* Ensure tooltips are above everything */
         }
         
         .tooltip.visible {
             opacity: 1;
-            transform: translate(-50%, 0);
-        }
-
-        /* Position for the info icon */
-        .info-icon {
-            margin-left: 5px;
-            font-size: 12px;
-            color: #007bff;
-            cursor: pointer;
-            position: relative;
+            transform: translateY(-10px);
         }
 
     </style>
@@ -282,9 +273,11 @@
 
                         // Show tooltip for the line
                         tooltip.innerText = line.dataset.tooltip;
-                        const rect = button.getBoundingClientRect();
-                        tooltip.style.left = `${rect.left + rect.width / 2}px`;
-                        tooltip.style.top = `${rect.top - 20}px`;
+                        const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
+                        const targetColumn = document.getElementById(column);
+                        const columnRect = targetColumn.getBoundingClientRect();
+                        tooltip.style.left = `${columnRect.left + columnRect.width / 4}px`;
+                        tooltip.style.top = `${columnRect.top + columnRect.height / 2}px`;
                         tooltip.classList.add("visible");
                     });
                 });
@@ -317,13 +310,6 @@
                         button.innerText = label;
                         button.id = alias;
         
-                        // Add the tooltip icon
-                        const infoIcon = document.createElement("span");
-                        infoIcon.className = "info-icon";
-                        infoIcon.dataset.tooltip = `Tooltip for ${label}`; // Use dynamic tooltip text
-                        infoIcon.innerText = "i";
-        
-                        button.appendChild(infoIcon); // Add icon to button
                         layerDiv.appendChild(button);
                     });
         
