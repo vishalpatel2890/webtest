@@ -18,7 +18,7 @@
 
         .tree-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: flex-start;
             margin: 50px;
             width: 90%;
@@ -31,6 +31,21 @@
             align-items: center;
             gap: 20px;
             position: relative;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Background colors for groups */
+        #stage1 {
+            background-color: #ffebcd; /* pastel beige */
+        }
+
+        #stage2 {
+            background-color: #e6f7ff; /* pastel blue */
+        }
+
+        #stage3 {
+            background-color: #e8ffe6; /* pastel green */
         }
 
         .tree-level button {
@@ -71,9 +86,9 @@
 
         <!-- Stage 2 -->
         <div class="tree-level" id="stage2">
-            <button data-parent="1A" onclick="navigate('2A')">2A</button>
+            <button data-parent="1C" onclick="navigate('2A')">2A</button>
             <button data-parent="1B" onclick="navigate('2B')">2B</button>
-            <button data-parent="1C" onclick="navigate('2C')">2C</button>
+            <button data-parent="1A" onclick="navigate('2C')">2C</button>
         </div>
 
         <!-- Stage 3 -->
