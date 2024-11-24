@@ -7,27 +7,32 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
         }
+
         .tree-container {
             display: flex;
+            justify-content: space-between;
             align-items: flex-start;
-            justify-content: space-around;
-            margin-top: 50px;
-            width: 80%;
+            margin: 50px;
+            width: 90%;
+            position: relative;
         }
+
         .tree-level {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            position: relative;
         }
+
         .tree-level button {
             padding: 10px 20px;
             border: 1px solid #ccc;
@@ -35,37 +40,97 @@
             background-color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 14px;
         }
+
         .tree-level button:hover {
             background-color: #007bff;
             color: white;
         }
-        .line {
-            width: 100%;
-            height: 2px;
-            background-color: #ccc;
-            position: absolute;
-        }
-        .line::after {
-            content: '';
-            width: 100%;
-            height: 100%;
+
+        svg {
             position: absolute;
             top: 0;
             left: 0;
-            background-color: red;
-            opacity: 0.3;
-        }
-        .connector {
-            position: absolute;
-            width: 0;
-            height: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <div id="tree-navigation">
+    <h1>Interactive Decision Tree</h1>
+    <p>Follow the flow by clicking buttons and observing conditional navigation.</p>
+    <div class="tree-container" id="tree-container">
+        <!-- Stage 1 -->
+        <div class="tree-level" id="stage1">
+            <button onclick="navigate('1A')">1A</button>
+            <button onclick="navigate('1B')">1B</button>
+            <button onclick="navigate('1C')">1C</button>
+        </div>
 
-    <node></div>
+        <!-- Stage 2 -->
+        <div class="tree-level" id="stage2">
+            <button data-parent="1A" onclick="navigate('2A')">2A</button>
+            <button data-parent="1B" onclick="navigate('2B')">2B</button>
+            <button data-parent="1C" onclick="navigate('2C')">2C</button>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="tree-level" id="stage3">
+            <button data-parent="2A">3A</button>
+            <button data-parent="2B">3B</button>
+            <button data-parent="2C">3C</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle navigation between stages
+        function navigate(currentStage) {
+            // Highlight the next stage buttons based on the current selection
+            const buttons = document.querySelectorAll(`[data-parent="${currentStage}"]`);
+            buttons.forEach(button => {
+                button.style.backgroundColor = "#007bff";
+                button.style.color = "#ffffff";
+            });
+        }
+
+        // Draw SVG lines between stages dynamically
+        function drawLines() {
+            const container = document.getElementById('tree-container');
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            container.appendChild(svg);
+
+            const stages = Array.from(container.children);
+            for (let i = 0; i < stages.length - 1; i++) {
+                const currentStage = stages[i].children;
+                const nextStage = stages[i + 1].children;
+
+                for (let button of currentStage) {
+                    for (let nextButton of nextStage) {
+                        if (nextButton.getAttribute('data-parent') === button.innerText) {
+                            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                            const start = button.getBoundingClientRect();
+                            const end = nextButton.getBoundingClientRect();
+
+                            const containerRect = container.getBoundingClientRect();
+
+                            line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
+                            line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
+                            line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
+                            line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+                            line.setAttribute("stroke", "#ccc");
+                            line.setAttribute("stroke-width", "2");
+
+                            svg.appendChild(line);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Wait for DOM content to load before drawing lines
+        window.onload = drawLines;
+    </script>
 </body>
 </html>
