@@ -58,6 +58,11 @@
             gap: var(--dynamic-gap-size);
         }
 
+
+    .tree-level:hover .layer {
+        gap: 3vw; /* Further increase gap when hovered to ensure enough space for expanded buttons */
+    }
+
         /* Unique pastel colors for each group */
         .group1 { background-color: #ffe4e1; }
         .group2 { background-color: #e6f7ff; }
@@ -70,7 +75,7 @@
         .group9 { background-color: #f408e7; }
 
         .tree-level button {
-            padding: 1vh 1vw; /* Adjust padding to be dynamic, allowing the button to expand */
+            padding: 1vh 1vw;
             border: 1px solid #ccc;
             border-radius: 1vh;
             background-color: #ffffff;
@@ -79,12 +84,15 @@
             font-size: var(--dynamic-font-size);
             text-align: center;
             word-wrap: break-word;
-            white-space: normal; /* Allow text to wrap */
-            max-width: 18vw; /* Limit the width so the text wraps rather than making the button too wide */
+            white-space: normal;
+            max-width: 18vw;
+            min-width: 18vw;
             display: inline-block;
             z-index: 2;
             box-sizing: border-box;
         }
+
+     
 
         .tree-level button:hover {
             background-color: #007bff;
