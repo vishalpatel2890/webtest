@@ -69,26 +69,22 @@
         .group8 { background-color: #f4d8e7; }
         .group9 { background-color: #f408e7; }
 
-    .tree-level button {
-                padding: 0.5vh 1vw;
-                border: 1px solid #ccc;
-                border-radius: 1vh;
-                background-color: #ffffff;
-                cursor: pointer;
-                transition: 0.3s;
-                text-align: center;
-                word-wrap: break-word;
-                white-space: normal;
-                max-width: 18vw;
-                min-width: 18vw;
-                display: inline-block;
-                z-index: 2;
-                flex-grow: 1;
-                box-sizing: border-box;
-                font-size: var(--dynamic-font-size);
-                height: var(--dynamic-button-height);
-                padding: calc(var(--dynamic-button-height) / 4) 1vw; /* Adjust padding dynamically */
-            }
+        .tree-level button {
+            padding: 1vh 1vw; /* Adjust padding to be dynamic, allowing the button to expand */
+            border: 1px solid #ccc;
+            border-radius: 1vh;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: var(--dynamic-font-size);
+            text-align: center;
+            word-wrap: break-word;
+            white-space: normal; /* Allow text to wrap */
+            max-width: 18vw; /* Limit the width so the text wraps rather than making the button too wide */
+            display: inline-block;
+            z-index: 2;
+            box-sizing: border-box;
+        }
 
         .tree-level button:hover {
             background-color: #007bff;
