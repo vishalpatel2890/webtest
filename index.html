@@ -388,9 +388,13 @@ groups.forEach((group, index) => {
         // Initialize the tree
         window.onload = function () {
             renderTree();
-            drawLines();
+        
+            // Use requestAnimationFrame to ensure the layout is ready before drawing lines
+            window.requestAnimationFrame(drawLines);
+        
             addInteractivity();
         };
+
         
         // Redraw lines on resize
         window.onresize = function() {
