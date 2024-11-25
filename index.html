@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Example Deal Progression - Target Account</title>
-    <style>
+ <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -22,30 +22,31 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin: 2vh;
+            margin: 1vh;
             width: 95%;
-            height: 80vh;
+            height: 85vh;
             position: relative;
         }
 
         .column {
             display: flex;
             flex-direction: column;
-            gap: 2vh;
+            gap: 1vh;
             flex: 1;
             margin: 0 1vw;
-            overflow-y: auto;
+            overflow: hidden;
         }
 
         .tree-level {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2vh;
-            padding: 2vh;
+            gap: 1vh;
+            padding: 1vh;
             border-radius: 1vh;
             position: relative;
             min-width: 15vw;
+            flex-grow: 1;
         }
 
         .layer {
@@ -54,6 +55,7 @@
             gap: 1vw;
             justify-content: center;
             align-items: flex-start;
+            flex-grow: 1;
         }
 
         /* Unique pastel colors for each group */
@@ -68,20 +70,20 @@
         .group9 { background-color: #f408e7; }
 
         .tree-level button {
-            padding: 1vh 2vw;
+            padding: 0.5vh 1vw;
             border: 1px solid #ccc;
             border-radius: 1vh;
             background-color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
-            font-size: calc(1.5vh - 0.2vw);
+            font-size: calc(1.2vh - 0.2vw);
             text-align: center;
             word-wrap: break-word;
             white-space: normal;
-            max-width: 20vw;
-            min-width: 20vw;
+            max-width: 18vw;
             display: inline-block;
             z-index: 2;
+            flex-grow: 1;
         }
 
         .tree-level button:hover {
@@ -128,9 +130,9 @@
             position: absolute;
             background-color: #333;
             color: #fff;
-            padding: 1vh 2vw;
+            padding: 0.5vh 1vw;
             border-radius: 1vh;
-            font-size: calc(1.5vh - 0.2vw);
+            font-size: calc(1.2vh - 0.2vw);
             width: 40%;
             white-space: normal;
             opacity: 0;
@@ -150,7 +152,7 @@
             top: 0.5vh;
             left: 1vw;
             font-weight: bold;
-            font-size: calc(1.5vh - 0.2vw);
+            font-size: calc(1.2vh - 0.2vw);
         }
 
         /* Media query for smaller screens */
@@ -168,7 +170,7 @@
 
             .column {
                 width: 90%;
-                margin-bottom: 2vh;
+                margin-bottom: 1vh;
             }
         }
     </style>
