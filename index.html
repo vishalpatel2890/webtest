@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Example Deal Progression - Target Account</title>
     <style>
-      body {
+    body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f9;
         margin: 0;
@@ -40,10 +40,11 @@
         justify-content: space-between;
         align-items: flex-start;
         width: 90vw; /* Take up most of the viewport width */
-        height: 75vh; /* Take up most of the viewport height */
+        height: auto; /* Adjust based on content */
+        max-height: 75vh; /* Limit the total height of the container */
         position: relative;
         box-sizing: border-box;
-        overflow: hidden;
+        overflow: hidden; /* Prevent scrolling to ensure everything fits */
     }
     
     .column {
@@ -52,7 +53,8 @@
         gap: 1vh;
         flex: 1;
         margin: 0 1vw;
-        overflow: auto; /* Allow scrolling if necessary to fit within the container */
+        height: 100%; /* Allow the column to grow fully */
+        overflow: auto; /* Allow scrolling within the column if necessary */
     }
     
     .tree-level {
@@ -64,10 +66,9 @@
         border-radius: 10px;
         position: relative;
         width: 100%;
-        min-height: 15vh; /* Set a minimum height to prevent it from being cut off */
-        max-height: 40vh; /* Allow it to grow if needed */
-        overflow: auto; /* Allow internal scrolling to prevent content cutoff */
+        overflow: visible; /* Allow contents to adjust without getting clipped */
         box-sizing: border-box;
+        flex-grow: 1; /* Allow the box to grow if necessary */
     }
     
     .layer {
@@ -102,7 +103,6 @@
         word-wrap: break-word;
         white-space: normal; /* Allow text to wrap */
         max-width: 12vw; /* Constrain button width */
-        max-height: 8vh; /* Constrain button height */
         display: inline-block; /* Ensure buttons behave like inline elements */
         z-index: 2;
         box-sizing: border-box;
@@ -152,7 +152,8 @@
         opacity: 1;
         transform: translateY(-10px);
     }
-
+  
+    
 
 
     </style>
