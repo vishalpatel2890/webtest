@@ -270,35 +270,58 @@
             
         ];
         
-        // Draw SVG lines between buttons
-        function drawLines() {
-            const container = document.querySelector(".tree-container");
-            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            container.appendChild(svg);
+        
+    // Draw SVG lines between buttons with a retry mechanism
+    function drawLines(retries = 5) {
+    const container = document.querySelector(".tree-container");
 
-            connections.forEach(({ from, to }) => {
-                const startButton = document.getElementById(from);
-                const endButton = document.getElementById(to);
+    // Remove any existing SVG to avoid duplications
+    const existingSvg = container.querySelector("svg");
+    if (existingSvg) {
+        existingSvg.remove();
+    }
 
-                if (startButton && endButton) {
-                    const start = startButton.getBoundingClientRect();
-                    const end = endButton.getBoundingClientRect();
-                    const containerRect = container.getBoundingClientRect();
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    container.appendChild(svg);
+    svg.style.position = 'absolute';
+    svg.style.top = 0;
+    svg.style.left = 0;
+    svg.style.width = '100%';
+    svg.style.height = '100%';
 
-                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                    line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
-                    line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
-                    line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
-                    line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+    connections.forEach(({ from, to }) => {
+        const startButton = document.getElementById(from);
+        const endButton = document.getElementById(to);
 
-                    line.classList.add("line");
-                    line.setAttribute("data-from", from);
-                    line.setAttribute("data-to", to);
+        if (startButton && endButton) {
+            const start = startButton.getBoundingClientRect();
+            const end = endButton.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
 
-                    svg.appendChild(line);
+            // Check if the bounding rects are valid
+            if (start.width === 0 || end.width === 0) {
+                // Retry drawing after some time if buttons are not yet properly rendered
+                if (retries > 0) {
+                    setTimeout(() => drawLines(retries - 1), 100);
                 }
-            });
+                return;
+            }
+
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
+            line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
+            line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
+            line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
+
+            line.classList.add("line");
+            line.setAttribute("data-from", from);
+            line.setAttribute("data-to", to);
+
+            svg.appendChild(line);
         }
+    });
+}
+
 
         // Add interactivity for highlighting and tooltips
         function addInteractivity() {
@@ -397,7 +420,6 @@ groups.forEach((group, index) => {
         
         // Redraw lines on resize
         window.onresize = function() {
-            document.querySelector("svg").remove(); // Remove existing lines
             drawLines(); // Redraw the lines
         };
     </script>
