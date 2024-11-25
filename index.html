@@ -5,156 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Example Deal Progression - Target Account</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 100vh; /* Full viewport height */
-        width: 100vw; /* Full viewport width */
-        box-sizing: border-box; /* Include padding and border in the width and height */
-        overflow: hidden; /* Prevent overflow on the body */
-    }
-    
-    h1 {
-        margin: 1vh 0; /* Smaller vertical margin to save space */
-        text-align: center;
-        width: 100%; /* Stretch the title across the page */
-        max-width: 800px; /* Set a max-width for readability */
-        box-sizing: border-box;
-        font-size: 2.5vh; /* Responsive font size based on viewport height */
-    }
-    
-    p {
-        text-align: center;
-        max-width: 800px; /* Set a max-width similar to the title to keep it aligned */
-        margin-bottom: 1vh; /* Reduced margin for better fit */
-        font-size: 1.8vh; /* Responsive font size */
-    }
-    
-    .tree-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 90vw; /* Take up most of the viewport width */
-        height: auto; /* Adjust based on content */
-        max-height: 75vh; /* Limit the total height of the container */
-        position: relative;
-        box-sizing: border-box;
-        overflow: hidden; /* Prevent scrolling to ensure everything fits */
-    }
-    
-    .column {
-        display: flex;
-        flex-direction: column;
-        gap: 1vh;
-        flex: 1;
-        margin: 0 1vw;
-        height: 100%; /* Allow the column to grow fully */
-        overflow: auto; /* Allow scrolling within the column if necessary */
-    }
-    
-    .tree-level {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1vh;
-        padding: 1vh 1vw;
-        border-radius: 10px;
-        position: relative;
-        width: 100%;
-        overflow: visible; /* Allow contents to adjust without getting clipped */
-        box-sizing: border-box;
-        flex-grow: 1; /* Allow the box to grow if necessary */
-    }
-    
-    .layer {
-        display: flex;
-        flex-wrap: wrap; /* Allow buttons to wrap to the next line if needed */
-        gap: 0.5vw;
-        justify-content: center;
-        align-items: flex-start; /* Align items at the top */
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    /* Unique pastel colors for each group */
-    .group1 { background-color: #ffe4e1; }
-    .group2 { background-color: #e6f7ff; }
-    .group3 { background-color: #e8ffe6; }
-    .group4 { background-color: #fffacd; }
-    .group5 { background-color: #ffebcd; }
-    .group6 { background-color: #d5e8d4; }
-    .group7 { background-color: #fbe4c2; }
-    .group8 { background-color: #f4d8e7; }
-    
-    .tree-level button {
-        padding: 1vh 1vw;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #ffffff;
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 1.5vh; /* Responsive font size */
-        text-align: center;
-        word-wrap: break-word;
-        white-space: normal; /* Allow text to wrap */
-        max-width: 12vw; /* Constrain button width */
-        display: inline-block; /* Ensure buttons behave like inline elements */
-        z-index: 2;
-        box-sizing: border-box;
-    }
-    
-    .tree-level button:hover {
-        background-color: #007bff;
-        color: white;
-    }
-    
-    svg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        pointer-events: none;
-    }
-    
-    .group-label {
-        position: absolute;
-        top: 5px;
-        left: 10px;
-        font-weight: bold;
-        font-size: 1.8vh; /* Responsive font size for group label */
-    }
-    
-    /* Tooltip styling */
-    .tooltip {
-        position: absolute;
-        background-color: #333;
-        color: #fff;
-        padding: 1vh 2vw;
-        border-radius: 5px;
-        font-size: 1.5vh; /* Responsive font size */
-        width: 35vw; /* Adjusted width for long text */
-        max-width: 300px; /* Set a max width */
-        white-space: normal;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease, transform 0.2s ease;
-        z-index: 3; /* Ensure tooltips are above everything */
-    }
-    
-    .tooltip.visible {
-        opacity: 1;
-        transform: translateY(-10px);
-    }
-  
-    
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
+        .tree-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 50px;
+            width: 90%;
+            position: relative;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .tree-level {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            min-width: 200px;
+        }
+
+        .layer {
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap to the next line if needed */
+            gap: 10px;
+            justify-content: center;
+            align-items: flex-start; /* Align items at the top */
+        }
+
+        /* Unique pastel colors for each group */
+        .group1 { background-color: #ffe4e1; }
+        .group2 { background-color: #e6f7ff; }
+        .group3 { background-color: #e8ffe6; }
+        .group4 { background-color: #fffacd; }
+        .group5 { background-color: #ffebcd; }
+        .group6 { background-color: #d5e8d4; }
+        .group7 { background-color: #fbe4c2; }
+        .group8 { background-color: #f4d8e7; }
+        .group9 { background-color: #f408e7; }
+
+        .tree-level button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+            text-align: center;
+            word-wrap: break-word;
+            white-space: normal; /* Allow text to wrap */
+            max-width: 250px; /* Set a max width to control button size */
+            display: inline-block; /* Ensure buttons behave like inline elements */
+            z-index: 2;
+        }
+
+        .tree-level button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .highlight {
+            opacity: 1 !important;
+        }
+
+        .dim {
+            opacity: 0.2;
+        }
+
+        .line {
+            stroke: #ccc;
+            stroke-width: 2;
+            transition: opacity 0.3s ease;
+        }
+
+        .line.highlight {
+            stroke: #007bff;
+            stroke-width: 3;
+        }
+
+        .line:hover {
+            stroke: #007bff;
+            stroke-width: 3;
+        }
+        
+        /* Tooltip styling */
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 45%;
+            white-space: normal;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 3; /* Ensure tooltips are above everything */
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(-10px);
+        }
+
+        /* Group label styling */
+        .group-label {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-weight: bold;
+        }
 
     </style>
 </head>
@@ -208,12 +199,7 @@
                 id: "group5",
                 group_label: "3.0 Proposal",
                 layers: [
-                    [{ alias: "5A", label: "I need to explain to a prospect how Treasure Data prices and gather data and inputs needed for pricing" }], 
-                    [{ alias: "5B", label: "I need to estimate infrastructure needed to build out a proposal" }, { alias: "5C", label: "I need to estimate services cost for Phase 1 Implementation" }],
-                    [{ alias: "5D", label: "I need to create a Quote for a Proposal" }], 
-                    [{ alias: "5E", label: "I need to create the first full proposal" }], 
-                    [{ alias: "5F", label: "I need to create and share a Mutual Success Plan" }],
-                    [{ alias: "5G", label: "I need to create a Highspot landing page for my prospect" }]
+                    [{ alias: "5A", label: "Button 5A" }, { alias: "5B", label: "Button 5B" }]
                 ]
             },
             {
@@ -270,58 +256,35 @@
             
         ];
         
-        
-    // Draw SVG lines between buttons with a retry mechanism
-    function drawLines(retries = 5) {
-    const container = document.querySelector(".tree-container");
+        // Draw SVG lines between buttons
+        function drawLines() {
+            const container = document.querySelector(".tree-container");
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            container.appendChild(svg);
 
-    // Remove any existing SVG to avoid duplications
-    const existingSvg = container.querySelector("svg");
-    if (existingSvg) {
-        existingSvg.remove();
-    }
+            connections.forEach(({ from, to }) => {
+                const startButton = document.getElementById(from);
+                const endButton = document.getElementById(to);
 
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    container.appendChild(svg);
-    svg.style.position = 'absolute';
-    svg.style.top = 0;
-    svg.style.left = 0;
-    svg.style.width = '100%';
-    svg.style.height = '100%';
+                if (startButton && endButton) {
+                    const start = startButton.getBoundingClientRect();
+                    const end = endButton.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
 
-    connections.forEach(({ from, to }) => {
-        const startButton = document.getElementById(from);
-        const endButton = document.getElementById(to);
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
+                    line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
+                    line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
+                    line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
 
-        if (startButton && endButton) {
-            const start = startButton.getBoundingClientRect();
-            const end = endButton.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
+                    line.classList.add("line");
+                    line.setAttribute("data-from", from);
+                    line.setAttribute("data-to", to);
 
-            // Check if the bounding rects are valid
-            if (start.width === 0 || end.width === 0) {
-                // Retry drawing after some time if buttons are not yet properly rendered
-                if (retries > 0) {
-                    setTimeout(() => drawLines(retries - 1), 100);
+                    svg.appendChild(line);
                 }
-                return;
-            }
-
-            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            line.setAttribute("x1", start.left + start.width / 2 - containerRect.left);
-            line.setAttribute("y1", start.top + start.height / 2 - containerRect.top);
-            line.setAttribute("x2", end.left + end.width / 2 - containerRect.left);
-            line.setAttribute("y2", end.top + end.height / 2 - containerRect.top);
-
-            line.classList.add("line");
-            line.setAttribute("data-from", from);
-            line.setAttribute("data-to", to);
-
-            svg.appendChild(line);
+            });
         }
-    });
-}
-
 
         // Add interactivity for highlighting and tooltips
         function addInteractivity() {
@@ -407,17 +370,13 @@ groups.forEach((group, index) => {
 });
 
         }
-        
+
         // Initialize the tree
         window.onload = function () {
             renderTree();
-            
-            // Wrap drawLines in setTimeout to ensure the DOM has fully rendered
-            setTimeout(() => {
-                drawLines();
-            }, 100); // Delay of 100 milliseconds
-        }
-        
+            drawLines();
+            addInteractivity();
+        };
     </script>
 </body>
 </html>
