@@ -75,7 +75,7 @@
             border-radius: 1vh;
             background-color: #ffffff;
             cursor: pointer;
-            transition: 0.3s;
+            transition: transform 0.3s ease, background-color 0.3s ease;
             font-size: var(--dynamic-font-size);
             text-align: center;
             word-wrap: break-word;
@@ -89,6 +89,7 @@
         .tree-level button:hover {
             background-color: #007bff;
             color: white;
+            transform: scale(1.2); /* Increase button size by 20% */
         }
 
         svg {
@@ -122,7 +123,8 @@
 
         .line:hover {
             stroke: #007bff;
-            stroke-width: 0.5vh;
+            stroke-width: 0.6vh; /* Increase line width */
+            transform: scale(1.2); /* Increase line size by 20% */
         }
         
         /* Tooltip styling */
@@ -132,7 +134,7 @@
             color: #fff;
             padding: 0.5vh 1vw;
             border-radius: 1vh;
-            font-size: calc(1.2vh - 0.2vw);
+            font-size: calc(4vh - 0.2vw);
             width: 40%;
             white-space: normal;
             opacity: 0;
