@@ -14,42 +14,46 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
 
         .tree-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin: 50px;
-            width: 90%;
+            margin: 2vh;
+            width: 95%;
+            height: 80vh;
             position: relative;
         }
 
         .column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 2vh;
             flex: 1;
-            margin: 0 20px;
+            margin: 0 1vw;
+            overflow-y: auto;
         }
 
         .tree-level {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            padding: 20px;
-            border-radius: 10px;
+            gap: 2vh;
+            padding: 2vh;
+            border-radius: 1vh;
             position: relative;
-            min-width: 200px;
+            min-width: 15vw;
         }
 
         .layer {
             display: flex;
-            flex-wrap: wrap; /* Allow buttons to wrap to the next line if needed */
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 1vw;
             justify-content: center;
-            align-items: flex-start; /* Align items at the top */
+            align-items: flex-start;
         }
 
         /* Unique pastel colors for each group */
@@ -64,18 +68,18 @@
         .group9 { background-color: #f408e7; }
 
         .tree-level button {
-            padding: 10px 20px;
+            padding: 1vh 2vw;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 1vh;
             background-color: #ffffff;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 14px;
+            font-size: 1.5vh;
             text-align: center;
             word-wrap: break-word;
-            white-space: normal; /* Allow text to wrap */
-            max-width: 250px; /* Set a max width to control button size */
-            display: inline-block; /* Ensure buttons behave like inline elements */
+            white-space: normal;
+            max-width: 20vw;
+            display: inline-block;
             z-index: 2;
         }
 
@@ -104,18 +108,18 @@
 
         .line {
             stroke: #ccc;
-            stroke-width: 2;
+            stroke-width: 0.3vh;
             transition: opacity 0.3s ease;
         }
 
         .line.highlight {
             stroke: #007bff;
-            stroke-width: 3;
+            stroke-width: 0.5vh;
         }
 
         .line:hover {
             stroke: #007bff;
-            stroke-width: 3;
+            stroke-width: 0.5vh;
         }
         
         /* Tooltip styling */
@@ -123,35 +127,52 @@
             position: absolute;
             background-color: #333;
             color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            width: 45%;
+            padding: 1vh 2vw;
+            border-radius: 1vh;
+            font-size: 1.5vh;
+            width: 40%;
             white-space: normal;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s ease, transform 0.2s ease;
-            z-index: 3; /* Ensure tooltips are above everything */
+            z-index: 3;
         }
         
         .tooltip.visible {
             opacity: 1;
-            transform: translateY(-10px);
+            transform: translateY(-1vh);
         }
 
         /* Group label styling */
         .group-label {
             position: absolute;
-            top: 5px;
-            left: 10px;
+            top: 0.5vh;
+            left: 1vw;
             font-weight: bold;
+            font-size: 1.5vh;
         }
 
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .tree-level button {
+                font-size: 2vw;
+                max-width: 40vw;
+            }
+
+            .tree-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .column {
+                width: 90%;
+                margin-bottom: 2vh;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Example Deal Progression - Target Accounts</h1>
-<!--     <p>Hover over a button to highlight connected lines and buttons.</p> -->
     <div class="tree-container">
         <div class="column" id="left-column"></div>
         <div class="column" id="right-column"></div>
@@ -159,7 +180,7 @@
 
     <script>
         // Define groups with layers of buttons
-        const groups = [
+const groups = [
             {
                 id: "group1",
                 group_label: "Pre-Pipeline",
@@ -334,41 +355,40 @@
             const leftColumn = document.getElementById("left-column");
             const rightColumn = document.getElementById("right-column");
 
-groups.forEach((group, index) => {
-    const groupDiv = document.createElement("div");
-    groupDiv.className = `tree-level group${index + 1}`;
-    groupDiv.id = group.id;
+            groups.forEach((group, index) => {
+                const groupDiv = document.createElement("div");
+                groupDiv.className = `tree-level group${index + 1}`;
+                groupDiv.id = group.id;
 
-    // Create and add the group label
-    const label = document.createElement("div");
-    label.className = "group-label";
-    label.innerText = `${group.group_label}`; // Customize the label text as needed
-    groupDiv.appendChild(label);
+                // Create and add the group label
+                const label = document.createElement("div");
+                label.className = "group-label";
+                label.innerText = `${group.group_label}`;
+                groupDiv.appendChild(label);
 
-    group.layers.forEach(layer => {
-        const layerDiv = document.createElement("div");
-        layerDiv.className = "layer";
+                group.layers.forEach(layer => {
+                    const layerDiv = document.createElement("div");
+                    layerDiv.className = "layer";
 
-        layer.forEach(({ alias, label }) => {
-            // Create the button
-            const button = document.createElement("button");
-            button.innerText = label;
-            button.id = alias;
+                    layer.forEach(({ alias, label }) => {
+                        // Create the button
+                        const button = document.createElement("button");
+                        button.innerText = label;
+                        button.id = alias;
 
-            layerDiv.appendChild(button);
-        });
+                        layerDiv.appendChild(button);
+                    });
 
-        groupDiv.appendChild(layerDiv);
-    });
+                    groupDiv.appendChild(layerDiv);
+                });
 
-    // Distribute groups between columns
-    if (index < 4) {
-        leftColumn.appendChild(groupDiv);
-    } else {
-        rightColumn.appendChild(groupDiv);
-    }
-});
-
+                // Distribute groups between columns
+                if (index < 4) {
+                    leftColumn.appendChild(groupDiv);
+                } else {
+                    rightColumn.appendChild(groupDiv);
+                }
+            });
         }
 
         // Initialize the tree
