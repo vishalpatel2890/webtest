@@ -368,6 +368,12 @@ groups.forEach((group, index) => {
             drawLines();
             addInteractivity();
         };
+        
+        // Redraw lines on resize
+        window.onresize = function() {
+            document.querySelector("svg").remove(); // Remove existing lines
+            drawLines(); // Redraw the lines
+        };
     </script>
 </body>
 </html>
