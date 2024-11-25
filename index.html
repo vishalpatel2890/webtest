@@ -88,9 +88,16 @@
             max-width: 18vw;
             min-width: 18vw;
             display: inline-block;
-            z-index: 2;
+            z-index: 4;
             box-sizing: border-box;
         }
+
+     .layer a {
+        text-decoration: none; /* Remove the underline from the hyperlink */
+        color: inherit; /* Inherit the button's color */
+        z-index: 3; /* Set a higher z-index to ensure it is above the SVG lines */
+        position: relative; /* Ensure anchor tag has a higher stacking context */
+    }
 
      
 
