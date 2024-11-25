@@ -41,21 +41,21 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1vh;
             padding: 1vh;
             border-radius: 1vh;
             position: relative;
             min-width: 15vw;
             flex-grow: 1;
+            gap: var(--dynamic-gap-size);
         }
 
         .layer {
             display: flex;
             flex-wrap: wrap;
-            gap: 1vw;
             justify-content: center;
             align-items: flex-start;
             flex-grow: 1;
+            gap: var(--dynamic-gap-size);
         }
 
         /* Unique pastel colors for each group */
@@ -76,7 +76,6 @@
                 background-color: #ffffff;
                 cursor: pointer;
                 transition: 0.3s;
-                font-size: calc(1.2vh - 0.2vw);
                 text-align: center;
                 word-wrap: break-word;
                 white-space: normal;
@@ -86,6 +85,9 @@
                 z-index: 2;
                 flex-grow: 1;
                 box-sizing: border-box;
+                font-size: var(--dynamic-font-size);
+                height: var(--dynamic-button-height);
+                padding: calc(var(--dynamic-button-height) / 4) 1vw; /* Adjust padding dynamically */
             }
 
         .tree-level button:hover {
@@ -379,6 +381,22 @@ const groups = [
             // Use the larger value between the two columns
             const totalLayers = Math.max(totalLayersLeft, totalLayersRight);
             const totalHeight = 90; // 90% of viewport height
+
+            // Set base values for the styles
+            const baseFontSize = 2; // in vh
+            const baseGapSize = 2; // in vh
+            const baseButtonHeight = 5; // in vh
+            
+            // Calculate adjusted values based on totalLayers
+            const fontSize = Math.max(1.2, baseFontSize / totalLayers) + "vh";
+            const gapSize = Math.max(0.5, baseGapSize / totalLayers) + "vh";
+            const buttonHeight = Math.max(2, baseButtonHeight / totalLayers) + "vh";
+            
+            // Apply styles to buttons, gaps, and other elements
+            document.documentElement.style.setProperty("--dynamic-font-size", fontSize);
+            document.documentElement.style.setProperty("--dynamic-gap-size", gapSize);
+            document.documentElement.style.setProperty("--dynamic-button-height", buttonHeight);
+
 
             groups.forEach((group, index) => {
                 const groupDiv = document.createElement("div");
