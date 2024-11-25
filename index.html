@@ -69,22 +69,24 @@
         .group8 { background-color: #f4d8e7; }
         .group9 { background-color: #f408e7; }
 
-        .tree-level button {
-            padding: 0.5vh 1vw;
-            border: 1px solid #ccc;
-            border-radius: 1vh;
-            background-color: #ffffff;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: calc(1.2vh - 0.2vw);
-            text-align: center;
-            word-wrap: break-word;
-            white-space: normal;
-            max-width: 18vw;
-            display: inline-block;
-            z-index: 2;
-            flex-grow: 1;
-        }
+    .tree-level button {
+                padding: 0.5vh 1vw;
+                border: 1px solid #ccc;
+                border-radius: 1vh;
+                background-color: #ffffff;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: calc(1.2vh - 0.2vw);
+                text-align: center;
+                word-wrap: break-word;
+                white-space: normal;
+                max-width: 18vw;
+                min-width: 18vw;
+                display: inline-block;
+                z-index: 2;
+                flex-grow: 1;
+                box-sizing: border-box;
+            }
 
         .tree-level button:hover {
             background-color: #007bff;
@@ -363,44 +365,57 @@ const groups = [
         
         // Render groups and buttons dynamically
         function renderTree() {
-            const leftColumn = document.getElementById("left-column");
-            const rightColumn = document.getElementById("right-column");
-
-            groups.forEach((group, index) => {
-                const groupDiv = document.createElement("div");
-                groupDiv.className = `tree-level group${index + 1}`;
-                groupDiv.id = group.id;
-
-                // Create and add the group label
-                const label = document.createElement("div");
-                label.className = "group-label";
-                label.innerText = `${group.group_label}`;
-                groupDiv.appendChild(label);
-
-                group.layers.forEach(layer => {
-                    const layerDiv = document.createElement("div");
-                    layerDiv.className = "layer";
-
-                    layer.forEach(({ alias, label }) => {
-                        // Create the button
-                        const button = document.createElement("button");
-                        button.innerText = label;
-                        button.id = alias;
-
-                        layerDiv.appendChild(button);
-                    });
-
-                    groupDiv.appendChild(layerDiv);
+        const leftColumn = document.getElementById("left-column");
+        const rightColumn = document.getElementById("right-column");
+    
+        // Separate groups into left and right columns
+        const leftGroups = groups.slice(0, Math.ceil(groups.length / 2));
+        const rightGroups = groups.slice(Math.ceil(groups.length / 2));
+    
+        // Find the maximum number of layers in any group in each column
+        const maxLayersLeft = Math.max(...leftGroups.map(group => group.layers.length));
+        const maxLayersRight = Math.max(...rightGroups.map(group => group.layers.length));
+        const maxLayers = Math.max(maxLayersLeft, maxLayersRight);
+        const groupHeight = 85 / maxLayers; // Calculate height percentage for each group based on the maximum number of layers
+    
+        // Render the groups dynamically
+        groups.forEach((group, index) => {
+            const groupDiv = document.createElement("div");
+            groupDiv.className = `tree-level group${index + 1}`;
+            groupDiv.id = group.id;
+            groupDiv.style.height = `${groupHeight}vh`; // Set dynamic height based on maximum layers
+    
+            // Create and add the group label
+            const label = document.createElement("div");
+            label.className = "group-label";
+            label.innerText = `${group.group_label}`;
+            groupDiv.appendChild(label);
+    
+            group.layers.forEach(layer => {
+                const layerDiv = document.createElement("div");
+                layerDiv.className = "layer";
+    
+                layer.forEach(({ alias, label }) => {
+                    // Create the button
+                    const button = document.createElement("button");
+                    button.innerText = label;
+                    button.id = alias;
+    
+                    layerDiv.appendChild(button);
                 });
-
-                // Distribute groups between columns
-                if (index < 4) {
-                    leftColumn.appendChild(groupDiv);
-                } else {
-                    rightColumn.appendChild(groupDiv);
-                }
+    
+                groupDiv.appendChild(layerDiv);
             });
-        }
+    
+            // Distribute groups between columns
+            if (index < leftGroups.length) {
+                leftColumn.appendChild(groupDiv);
+            } else {
+                rightColumn.appendChild(groupDiv);
+            }
+        });
+    }
+
 
         // Initialize the tree
         window.onload = function () {
