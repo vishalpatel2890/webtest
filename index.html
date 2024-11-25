@@ -384,16 +384,15 @@ groups.forEach((group, index) => {
 });
 
         }
-
+        
         // Initialize the tree
         window.onload = function () {
             renderTree();
-        
-            // Use requestAnimationFrame to ensure the layout is ready before drawing lines
-            window.requestAnimationFrame(drawLines);
-        
-            addInteractivity();
-        };
+            
+            // Wrap drawLines in setTimeout to ensure the DOM has fully rendered
+            setTimeout(() => {
+                drawLines();
+            }, 100); // Delay of 100 milliseconds
 
         
         // Redraw lines on resize
