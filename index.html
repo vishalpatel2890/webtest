@@ -199,7 +199,7 @@ const groups = [
                 id: "group1",
                 group_label: "Pre-Pipeline",
                 layers: [
-                    [{ alias: "1A", label: "I need to create an Account Plan", data: "<h1>Account Planning</h1><p>All target accounts should have an account plan.</p>" }],
+                    [{ alias: "1A", label: "I need to create an Account Plan", link: "https://treasuredata.highspot.com/items/663a150a8efa53e821a0cb3b?lfrm=isd.9" , data: "<h1>Account Planning</h1><p>All target accounts should have an account plan.</p>" }],
                     [{ alias: "1B", label: "I need to connect with a contact in an Account" }, { alias: "1C", label: "I need to engage a Partner to break into an Account" }]
                 ]
             },
@@ -462,9 +462,23 @@ const groups = [
                         const button = document.createElement("button");
                         button.innerText = label;
                         button.id = alias;
+                        
                         button.data = data;
-        
-                        layerDiv.appendChild(button);
+
+                        // If there's a link, create an anchor tag
+                        if (link) {
+                            const ahref = document.createElement("a");
+                            ahref.href = data.link;
+                            ahref.target = "_blank"; // Open link in a new tab
+                            ahref.style.textDecoration = "none"; // Remove underline from hyperlink
+                            ahref.style.color = "inherit"; // Inherit button's color
+    
+                            // Wrap button inside anchor tag
+                            ahref.appendChild(button);
+                            layerDiv.appendChild(ahref);
+                        } else {
+                            layerDiv.appendChild(button);
+                        }
                     });
         
                     groupDiv.appendChild(layerDiv);
