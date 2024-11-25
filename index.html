@@ -188,7 +188,9 @@
                 id: "group4",
                 group_label: "2.0 Solutioning",
                 layers: [
-                    [{ alias: "4A", label: "I need to do a Demo to show the value of Treasure Data " }, { alias: "4B", label: "I need to complete an RFx" }]
+                    [{ alias: "4A", label: "I need to gather data and summarize use cases to build an initial Value Hypothesis" }, { alias: "4B", label: "I need to complete an RFx" }]
+                    [{ alias: "4C", label: "I need to do a Demo to show the value of Treasure Data " }],
+                    [{ alias: "4D", label: "I need to run a Technical Deep Dive Demo" }]
                 
                 ]
             },
@@ -244,8 +246,10 @@
             { from: "3B", to: "3C" },
             { from: "3B", to: "4A" },
             { from: "3B", to: "4B" },
+            { from: "4B", to: "4A" },
             { from: "3C", to: "4A" },
-            { from: "3C", to: "4B" }
+            { from: "3C", to: "4B" },
+            { from: "4A", to "4C"}
             
         ];
         
