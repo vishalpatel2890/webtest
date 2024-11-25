@@ -381,7 +381,7 @@ const groups = [
                     });
         
                     // Show tooltip for the button
-                    tooltip.innerText = button.data ? button.data : button.innerText;
+                    tooltip.innerHTML = button.data ? button.data : button.innerText;
                     const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
                     const targetColumn = document.getElementById(column);
                     const columnRect = targetColumn.getBoundingClientRect();
