@@ -199,7 +199,7 @@ const groups = [
                 id: "group1",
                 group_label: "Pre-Pipeline",
                 layers: [
-                    [{ alias: "1A", label: "I need to create an Account Plan" }],
+                    [{ alias: "1A", label: "I need to create an Account Plan", data: "<h1>Test</h1>" }],
                     [{ alias: "1B", label: "I need to connect with a contact in an Account" }, { alias: "1C", label: "I need to engage a Partner to break into an Account" }]
                 ]
             },
@@ -457,11 +457,12 @@ const groups = [
                     const layerDiv = document.createElement("div");
                     layerDiv.className = "layer";
         
-                    layer.forEach(({ alias, label }) => {
+                    layer.forEach(({ alias, label, data }) => {
                         // Create the button
                         const button = document.createElement("button");
                         button.innerText = label;
                         button.id = alias;
+                        button.data = data;
         
                         layerDiv.appendChild(button);
                     });
