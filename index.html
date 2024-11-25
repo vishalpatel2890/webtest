@@ -134,7 +134,7 @@
             color: #fff;
             padding: 0.5vh 1vw;
             border-radius: 1vh;
-            font-size: calc(4vh - 0.2vw);
+            font-size: calc(3vh - 0.2vw);
             width: 40%;
             white-space: normal;
             opacity: 0;
@@ -322,46 +322,63 @@ const groups = [
 
         // Add interactivity for highlighting and tooltips
         function addInteractivity() {
-            const buttons = document.querySelectorAll("button");
-            const lines = document.querySelectorAll(".line");
-            const tooltip = document.createElement("div");
-            tooltip.className = "tooltip";
-            document.body.appendChild(tooltip);
+    const buttons = document.querySelectorAll("button");
+    const lines = document.querySelectorAll(".line");
+    const tooltip = document.createElement("div");
+    tooltip.className = "tooltip";
+    document.body.appendChild(tooltip);
 
-            buttons.forEach(button => {
-                button.addEventListener("mouseover", () => {
-                    const fromLines = Array.from(lines).filter(line => line.getAttribute("data-from") === button.id);
-                    const toLines = Array.from(lines).filter(line => line.getAttribute("data-to") === button.id);
+    buttons.forEach(button => {
+        button.addEventListener("mouseover", () => {
+            const fromLines = Array.from(lines).filter(line => line.getAttribute("data-from") === button.id);
+            const toLines = Array.from(lines).filter(line => line.getAttribute("data-to") === button.id);
 
-                    buttons.forEach(btn => btn.classList.add("dim"));
-                    lines.forEach(line => line.classList.add("dim"));
+            buttons.forEach(btn => btn.classList.add("dim"));
+            lines.forEach(line => line.classList.add("dim"));
 
-                    button.classList.remove("dim");
-                    fromLines.concat(toLines).forEach(line => {
-                        line.classList.add("highlight");
-                        const connectedId = line.getAttribute("data-from") === button.id
-                            ? line.getAttribute("data-to")
-                            : line.getAttribute("data-from");
-                        document.getElementById(connectedId).classList.remove("dim");
-                    });
+            button.classList.remove("dim");
+            button.classList.add("highlight");
+            button.style.transform = "scale(1.2)";
 
-                    // Show tooltip for the button
-                    tooltip.innerText = button.innerText;
-                    const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
-                    const targetColumn = document.getElementById(column);
-                    const columnRect = targetColumn.getBoundingClientRect();
-                    tooltip.style.left = `${columnRect.left + columnRect.width / 2 - tooltip.clientWidth / 2}px`;
-                    tooltip.style.top = `${columnRect.top + columnRect.height / 2}px`;
-                    tooltip.classList.add("visible");
-                });
-
-                button.addEventListener("mouseout", () => {
-                    buttons.forEach(btn => btn.classList.remove("dim"));
-                    lines.forEach(line => line.classList.remove("dim", "highlight"));
-                    tooltip.classList.remove("visible");
-                });
+            // Highlight connected lines and buttons
+            fromLines.concat(toLines).forEach(line => {
+                line.classList.add("highlight");
+                line.style.transform = "scale(1.2)";
+                line.style.strokeWidth = "0.6vh"; // Increase stroke width by 20%
+                const connectedId = line.getAttribute("data-from") === button.id
+                    ? line.getAttribute("data-to")
+                    : line.getAttribute("data-from");
+                const connectedButton = document.getElementById(connectedId);
+                connectedButton.classList.remove("dim");
+                connectedButton.classList.add("highlight");
+                connectedButton.style.transform = "scale(1.2)";
             });
-        }
+
+            // Show tooltip for the button
+            tooltip.innerText = button.innerText;
+            const column = button.closest(".column").id === "left-column" ? "right-column" : "left-column";
+            const targetColumn = document.getElementById(column);
+            const columnRect = targetColumn.getBoundingClientRect();
+            tooltip.style.left = `${columnRect.left + columnRect.width / 2 - tooltip.clientWidth / 2}px`;
+            tooltip.style.top = `${columnRect.top + columnRect.height / 2}px`;
+            tooltip.classList.add("visible");
+        });
+
+        button.addEventListener("mouseout", () => {
+            buttons.forEach(btn => {
+                btn.classList.remove("dim", "highlight");
+                btn.style.transform = "scale(1)"; // Reset button scale
+            });
+            lines.forEach(line => {
+                line.classList.remove("dim", "highlight");
+                line.style.transform = "scale(1)"; // Reset line scale
+                line.style.strokeWidth = "0.3vh"; // Reset line width
+            });
+            tooltip.classList.remove("visible");
+        });
+    });
+}
+
         
         // Render groups and buttons dynamically
         function renderTree() {
