@@ -247,8 +247,8 @@ const groups = [
                 layers: [
                     [{ alias: "6A", label: "I need to run a Security Review/Risk Assessment Call" }],
                     [{ alias: "6B", label: "I need to begin legal reviews (MSA, DPA, OF, etc)" }],
-                    [{ alias: "6C", label: "I need to run a Workshop Evaluation Process" }, { alias: "6D", label: "I need to run a POC Evaluation Process" }],
-                    [{ alias: "6E", label: "I need to run a hands-on Technical Workshop (Mock)" }, { alias: "6F", label: "I need to scope a POC" }]
+                    [{ alias: "6C", label: "I need to run a Workshop Evaluation Process" }, { alias: "6D", label: "I need to run a POC Evaluation Process" }]
+                    // [{ alias: "6E", label: "I need to run a hands-on Technical Workshop (Mock)" }, { alias: "6F", label: "I need to scope a POC" }]
                 ]
             },
             {
@@ -450,7 +450,7 @@ const groups = [
                 });
         
                 // Distribute groups between columns
-                if (index < Math.ceil(groups.length / 2)) {
+                if (index < Math.ceil((groups.length - 1) / 2)) {
                     leftColumn.appendChild(groupDiv);
                 } else {
                     rightColumn.appendChild(groupDiv);
