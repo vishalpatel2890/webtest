@@ -232,7 +232,8 @@ const groups = [
                 id: "group6",
                 group_label: "4.0 Selection",
                 layers: [
-                    [{ alias: "6A", label: "I need to run a Security Review/Risk Assessment Call" }, { alias: "6B", label: "I need to begin legal reviews (MSA, DPA, OF, etc)" }],
+                    [{ alias: "6A", label: "I need to run a Security Review/Risk Assessment Call" }],
+                    [{ alias: "6B", label: "I need to begin legal reviews (MSA, DPA, OF, etc)" }],
                     [{ alias: "6C", label: "I need to run a Workshop Evaluation Process" }, { alias: "6D", label: "I need to run a POC Evaluation Process" }],
                     [{ alias: "6E", label: "I need to run a hands-on Technical Workshop (Mock)" }, { alias: "6F", label: "I need to scope a POC" }]
                 ]
@@ -241,22 +242,23 @@ const groups = [
                 id: "group7",
                 group_label: "5.0 Negotiation",
                 layers: [
-                    [{ alias: "7A", label: "Button 7A" }],
-                    [{ alias: "7B", label: "Button 7B" }]
+                    [[{ alias: "7A", label: "I need to update my proposal based on customer feedback" }], { alias: "7B", label: "I need to run a Use Case Workshop to build a use case roadmap to inform implementation" }],
+                    [{ alias: "7C", label: "I need to negotiate my proposal" }, { alias: "7D", label: "I need to scope an Implementation" }],
+                    [{ alias: "7E", label: "I need to finalize legal (MSA, DPA, OF, etc)" }]
                 ]
             },
             {
                 id: "group8",
                 group_label: "6.0 Closed/Won",
                 layers: [
-                    [{ alias: "8A", label: "Button 8A" }, { alias: "8B", label: "Button 8B" }]
+                    [{ alias: "8A", label: "I need to create a win summary for the deal" }, { alias: "8B", label: "I need to hand off my customer to post sales" }]
                 ]
             }, 
             {
                 id: "group9",
                 group_label: "7.0 Closed/Won",
                 layers: [
-                    [{ alias: "9A", label: "Button 9A" }, { alias: "9B", label: "Button 9B" }]
+                    [{ alias: "9A", label: "I need to create a loss summary for the deal" }]
                 ]
             }
         ];
